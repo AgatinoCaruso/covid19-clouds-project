@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { DatePipe } from '@angular/common';
 import { SummaryData, CountryData } from '../models';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,8 +19,13 @@ export class DashboardComponent implements OnInit {
     highlyDeathData: Array<CountryData>;
     highlyRecoveredData: Array<CountryData>;
     currentDate: string;
+    Slug: string;
 
-    constructor(private service: DataService, private datePipe: DatePipe) { }
+    constructor(private service: DataService, private datePipe: DatePipe, private actRoute: ActivatedRoute) {
+    this.Slug = this.actRoute.snapshot.params.Slug;
+    if(this.Slug == null) 
+      this.Slug = "worldwide";
+  }
 
     ngOnInit() {
       let date = new Date();
