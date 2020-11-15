@@ -1,1 +1,59 @@
-<p>dashboard works!</p>
+<!-- Summary row -->
+  <div class="row row-m-t">
+   <div class="col-xs-1 col-md-2">&nbsp;</div>
+   <!-- Here center column -->
+   <div class="col-xs-10 col-md-8">
+
+     <!-- Title of the table-->
+     <table class="table table-bordered">
+       <thead class="thead-light">
+           <th class="border-white"><h5 class="border-white">Global Summary</h5></th>
+       </thead>
+      </table>
+
+      <!-- Table -->
+      <table class="table table-hover table-bordered table-center">
+        <tbody>
+            <tr class="table-warning">
+                <td class="border-white"><p class="text-left text-middle">Total Cases</p></td>
+                <td class="border-white"><p class="text-right">{{summaryData?.Global?.TotalConfirmed | number}}</p></td>
+            </tr>
+            <tr class="table-warning">
+                <td class="border-white"><p class="text-left">New Cases</p></td>
+                <td class="border-white"><p class="text-right">{{summaryData?.Global?.NewConfirmed | number}}</p></td>
+            </tr>
+            <tr class="table-warning">
+                <td class="border-white"><p class="text-left">Active Cases</p></td>
+                <td class="border-white"><p class="text-right">idk</p></td>
+            </tr>
+            <tr class="table-info">
+                <td class="border-white"><p class="text-left">Total Recovered</p></td>
+                <td class="border-white"><p class="text-right">{{summaryData?.Global?.TotalRecovered | number}}</p></td>
+            </tr>
+            <tr class="table-info">
+                <td class="border-white"><p class="text-left">New Recovered</p></td>
+                <td class="border-white"><p class="text-right">{{summaryData?.Global?.NewRecovered | number}}</p></td>
+            </tr>
+            <tr class="table-info">
+                <td class="border-white"><p class="text-left">Recovery Rate</p></td>
+                <td class="border-white"><p class="text-right">idk</p></td>
+            </tr>
+            <tr class="table-danger">
+                <td class="border-white"><p class="text-left">Total Deaths</p></td>
+                <td class="border-white"><p class="text-right">{{summaryData?.Global?.TotalDeaths | number}}</p></td>
+            </tr>
+            <tr class="table-danger">
+                <td class="border-white"><p class="text-left">New Deaths</p></td>
+                <td class="border-white"><p class="text-right">{{summaryData?.Global?.NewDeaths | number}}</p></td>
+            </tr>
+            <tr class="table-danger">
+                <td class="border-white"><p class="text-left">Mortality Rate</p></td>
+                <td class="border-white"><p class="text-right">idk</p></td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+   <div class="col-xs-1 col-md-2">&nbsp;</div>
+
+</div>
