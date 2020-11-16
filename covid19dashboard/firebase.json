@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "src/app/dashboard/",
+    "public": "dist/covid19dashboard/",
     "ignore": [
       "firebase.json",
       "**/.*",

@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit {
 
     constructor(private service: DataService, private datePipe: DatePipe, private actRoute: ActivatedRoute) {
     this.Slug = this.actRoute.snapshot.params.Slug;
-    if(this.Slug == null) 
+    if(this.Slug == null)
       this.Slug = "worldwide";
   }
 
