@@ -1,7 +1,7 @@
 export class SummaryData {
     Global: GlobalData;
     Countries: Array<CountryData>;
-    Date: Date;
+    Date: Date
 }
 
 export class GlobalData {
@@ -18,4 +18,8 @@ export class CountryData extends GlobalData {
     CountryCode: string;
     Date: Date;
     Slug: string
+}
+
+export class WeeklyData {
+     WeekData: Array<GlobalData>
 }

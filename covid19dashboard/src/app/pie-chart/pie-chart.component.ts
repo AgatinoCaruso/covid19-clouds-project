@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { BaseChartDirective } from 'ng2-charts';
 import { ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { DataService } from '../data.service';
+import { SummaryData, CountryData } from '../models';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 
 @Component({
@@ -9,6 +12,12 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
   styleUrls: ['./pie-chart.component.scss']
 })
 export class PieChartComponent implements OnInit {
+
+  summaryData: SummaryData;
+  activeCases: number;
+  Slug: string;
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+
   // Pie
   public pieChartOptions: ChartOptions = {
     responsive: true,
@@ -24,54 +33,41 @@ export class PieChartComponent implements OnInit {
       },
     }
   };
-  public pieChartLabels: Label[] = [['Download', 'Sales'], ['In', 'Store', 'Sales'], 'Mail Sales'];
-  public pieChartData: number[] = [300, 500, 100];
+  public pieChartLabels: Label[] = ['Dead Cases', 'Recovered Cases', 'Active Cases'];
+  public pieChartData: number[] = [33, 33, 33];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
   public pieChartPlugins = [pluginDataLabels];
   public pieChartColors = [
     {
-      backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)'],
+      backgroundColor: ['#f5c6cb', '#bee5eb', '#ffeeba'],
     },
   ];
 
-  constructor() { }
+  constructor(private service: DataService) { }
 
   ngOnInit(): void {
+    this.getAllData();
+    setTimeout(() => { //to update the graph
+    this.chart.chart.data.datasets[0].data =
+      [this.summaryData.Global.TotalDeaths,
+       this.summaryData.Global.TotalRecovered,
+       this.activeCases]
+     this.chart.chart.update()
+    }, 2000);
   }
 
-  // events
-  public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
+  getAllData() {
+    this.service.getData().subscribe(
+      response => {
+        this.summaryData = response;
+        this.getActiveCases();
+      }
+    )
   }
-
-  public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
-  }
-
-  changeLabels(): void {
-    const words = ['hen', 'variable', 'embryo', 'instal', 'pleasant', 'physical', 'bomber', 'army', 'add', 'film',
-      'conductor', 'comfortable', 'flourish', 'establish', 'circumstance', 'chimney', 'crack', 'hall', 'energy',
-      'treat', 'window', 'shareholder', 'division', 'disk', 'temptation', 'chord', 'left', 'hospital', 'beef',
-      'patrol', 'satisfied', 'academy', 'acceptance', 'ivory', 'aquarium', 'building', 'store', 'replace', 'language',
-      'redeem', 'honest', 'intention', 'silk', 'opera', 'sleep', 'innocent', 'ignore', 'suite', 'applaud', 'funny'];
-    const randomWord = () => words[Math.trunc(Math.random() * words.length)];
-    this.pieChartLabels = Array.apply(null, { length: 3 }).map(_ => randomWord());
-  }
-
-  addSlice(): void {
-    this.pieChartLabels.push(['Line 1', 'Line 2', 'Line 3']);
-    this.pieChartData.push(400);
-    this.pieChartColors[0].backgroundColor.push('rgba(196,79,244,0.3)');
-  }
-
-  removeSlice(): void {
-    this.pieChartLabels.pop();
-    this.pieChartData.pop();
-    this.pieChartColors[0].backgroundColor.pop();
-  }
-
-  changeLegendPosition(): void {
-    this.pieChartOptions.legend.position = this.pieChartOptions.legend.position === 'left' ? 'top' : 'left';
+  getActiveCases() {
+    this.activeCases = ((this.summaryData?.Global?.TotalConfirmed)
+                       -(this.summaryData?.Global?.TotalRecovered)
+                       -(this.summaryData?.Global?.TotalDeaths));
   }
 }

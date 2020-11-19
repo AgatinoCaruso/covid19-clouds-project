@@ -26,7 +26,7 @@
             </tr>
             <tr class="table-warning">
                 <td class="border-white"><p class="text-left">Active Cases</p></td>
-                <td class="border-white"><p class="text-right">idk</p></td>
+                <td class="border-white"><p class="text-right">{{activeCases | number}}</p></td>
             </tr>
             <tr class="table-info">
                 <td class="border-white"><p class="text-left">Total Recovered</p></td>
@@ -79,6 +79,9 @@
    </thead>
   </table>
 
+  <!--Space -->
+  <div class="row row-m-t">&nbsp;</div>
+
   <app-pie-chart></app-pie-chart>
 
   </div>
@@ -102,6 +105,9 @@
        <th class="border-white"><h5 class="border-white">Daily Corona Virus Cases Worldwide</h5></th>
    </thead>
   </table>
+
+  <!--Space -->
+  <div class="row row-m-t">&nbsp;</div>
 
   <app-bar-chart></app-bar-chart>
 
@@ -127,6 +133,8 @@
    </thead>
   </table>
 
+  <!--Space -->
+  <div class="row row-m-t">&nbsp;</div>
   <app-line-chart></app-line-chart>
 
   </div>
@@ -189,6 +197,6 @@
      <!-- Title of the table-->
      <table class="table table-bordered">
        <thead class="thead-light">
-           <th class="border-white"><h5 class="border-white">Data Source: <a href="https://covid19api.com/">COVID-19 API / Johns Hopkins CSSE</a></h5></th>
+           <th class="border-white text-center"><small class="border-white">Data Source: <a href="https://covid19api.com/">COVID-19 API / Johns Hopkins CSSE</a></small></th>
        </thead>
       </table>
