@@ -13,12 +13,14 @@ import { environment } from 'src/environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 
 import { ChartsModule } from 'ng2-charts';
+import { CountryComponent } from './country/country.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TopBarComponent,
-    DashboardComponent
+    DashboardComponent,
+    CountryComponent
   ],
   imports: [
     BrowserModule,

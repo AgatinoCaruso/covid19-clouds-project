@@ -5,14 +5,16 @@ import { SummaryData, CountryData } from '../models';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
+  selector: 'app-country',
+  templateUrl: './country.component.html',
+  styleUrls: ['./country.component.css'],
   providers: [DatePipe]
 })
-export class DashboardComponent implements OnInit {
-    title = 'covid19dashboard';
+export class CountryComponent implements OnInit {
+    title = 'covid19countrydashboard';
     summaryData: SummaryData;
+    countryData: CountryData;
+    selectedCountryData: CountryData;
     highlyConfirmedData: Array<CountryData>;
     highlyDeathData: Array<CountryData>;
     highlyRecoveredData: Array<CountryData>;
@@ -22,7 +24,7 @@ export class DashboardComponent implements OnInit {
     constructor(private service: DataService, private datePipe: DatePipe, private actRoute: ActivatedRoute) {
     this.Slug = this.actRoute.snapshot.params.Slug;
     if(this.Slug == null)
-      this.Slug = "worldwide";
+      this.Slug = "france";
   }
 
     ngOnInit() {
@@ -35,9 +37,14 @@ export class DashboardComponent implements OnInit {
       this.service.getData().subscribe(
         response => {
           this.summaryData = response;
+          this.getCountryData();
           this.getSortedData();
         }
       )
+    }
+
+    getCountryData() {
+      this.countryData = this.summaryData.Countries.find(x => x.Slug == this.Slug);
     }
 
     getSortedData() {
