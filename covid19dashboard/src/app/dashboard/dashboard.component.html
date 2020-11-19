@@ -1,8 +1,5 @@
 <app-top-bar></app-top-bar>
 
-    <a href="dashboard/italy">Go to Italy</a>
-
-
 <!-- Summary row -->
   <div class="row row-m-t">
    <div class="col-xs-1 col-md-2">&nbsp;</div>
@@ -17,7 +14,7 @@
       </table>
 
       <!-- Table -->
-      <table class="table table-hover table-bordered table-center">
+      <table class="table table-bordered table-center">
         <tbody>
             <tr class="table-warning">
                 <td class="border-white"><p class="text-left text-middle">Total Cases</p></td>
@@ -60,5 +57,50 @@
     </div>
 
    <div class="col-xs-1 col-md-2">&nbsp;</div>
+
+</div>
+<!--Spaces -->
+<div class="row row-m-t">&nbsp;</div>
+<div class="row row-m-t">&nbsp;</div>
+
+<!-- Countries row -->
+  <div class="row row-m-t">
+   <div class="col-xs-1 col-md-2">&nbsp;</div>
+   <!-- Here center column -->
+   <div class="col-xs-10 col-md-8">
+
+     <!-- Title of the table-->
+     <table class="table table-bordered">
+       <thead class="thead-light">
+           <th class="border-white"><h5 class="border-white">Countries Data</h5></th>
+       </thead>
+      </table>
+
+<!-- Table -->
+<table class="table table-bordered table-center">
+  <thead>
+    <th class="border-white table-dark"><p>Country</p></th>
+    <th class="border-white table-warning"><p>New Cases</p></th>
+    <th class="border-white table-warning"><p>New Cases</p></th>
+    <th class="border-white table-primary"><p>New Recoveries</p></th>
+    <th class="border-white table-primary"><p>Total Recoveries</p></th>
+    <th class="border-white table-danger"><p>New Deaths</p></th>
+    <th class="border-white table-danger"><p>Total Deaths</p></th>
+  </thead>
+  <tbody>
+      <tr *ngFor="let country of summaryData.Countries">
+          <td class="border-white table-dark"><a href="dashboard/{{country.Slug}}" class="text-white">{{country.Country}}</a></td>
+          <td class="border-white table-warning"><p class="text-right">{{country?.NewConfirmed | number}}</p></td>
+          <td class="border-white table-warning"><p class="text-right">{{country?.TotalConfirmed | number}}</p></td>
+          <td class="border-white table-primary"><p class="text-right">{{country?.NewRecovered | number}}</p></td>
+          <td class="border-white table-primary"><p class="text-right">{{country?.TotalRecovered | number}}</p></td>
+          <td class="border-white table-danger"><p class="text-right">{{country?.NewDeaths | number}}</p></td>
+          <td class="border-white table-danger"><p class="text-right">{{country?.TotalDeaths | number}}</p></td>
+      </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="col-xs-1 col-md-2">&nbsp;</div>
 
 </div>

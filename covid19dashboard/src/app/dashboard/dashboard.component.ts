@@ -26,8 +26,8 @@ export class DashboardComponent implements OnInit {
   }
 
     ngOnInit() {
-      let date = new Date();
-      this.currentDate = this.datePipe.transform(date,'dd-MMM-yyyy');
+    //  let date = new Date();
+    //  this.currentDate = this.datePipe.transform(date,'dd-MMM-yyyy');
       this.getAllData();
     }
 
