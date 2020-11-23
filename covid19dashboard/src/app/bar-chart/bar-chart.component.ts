@@ -23,10 +23,10 @@ export class BarChartComponent implements OnInit {
     // We use these empty structures as placeholders for dynamic theming.
     scales: { xAxes: [{}], yAxes: [{}] },
     plugins: {
-      datalabels: {
-        anchor: 'end',
-        align: 'end',
-      }
+      // removes labels on data
+        datalabels: {
+            display: false,
+      },
     }
   };
   public barChartLabels: Label[] = ['01', '02', '03', '04', '05', '06', '07'];

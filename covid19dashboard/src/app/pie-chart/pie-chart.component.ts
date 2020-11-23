@@ -24,14 +24,12 @@ export class PieChartComponent implements OnInit {
     legend: {
       position: 'top',
     },
+    // removes labels on data
     plugins: {
       datalabels: {
-        formatter: (value, ctx) => {
-          const label = ctx.chart.data.labels[ctx.dataIndex];
-          return label;
-        },
+          display: false,
       },
-    }
+    },
   };
   public pieChartLabels: Label[] = ['Dead Cases', 'Recovered Cases', 'Active Cases'];
   public pieChartData: number[] = [33, 33, 33];

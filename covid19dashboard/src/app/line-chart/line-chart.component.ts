@@ -12,6 +12,7 @@ import { WeeklyData } from '../models';
   styleUrls: ['./line-chart.component.scss']
 })
 export class LineChartComponent implements OnInit {
+
   dataSinceApril: WeeklyData;
 
   public lineChartData: ChartDataSets[] = [
@@ -21,6 +22,12 @@ export class LineChartComponent implements OnInit {
   ];
   public lineChartLabels: Label[] = ["1"];
   public lineChartOptions: (ChartOptions & { annotation: any }) = {
+    // removes labels on data
+    plugins: {
+      datalabels: {
+          display: false,
+      },
+    },
     responsive: true,
     scales: {
       // We use this empty structure as a placeholder for dynamic theming.
@@ -34,10 +41,10 @@ export class LineChartComponent implements OnInit {
           id: 'y-axis-1',
           position: 'right',
           gridLines: {
-            color: 'rgba(255,0,0,0.3)',
+            color: 'rgba(0,0,0,0.3)',
           },
           ticks: {
-            fontColor: 'red',
+            fontColor: 'grey',
           }
         }
       ]
@@ -49,7 +56,7 @@ export class LineChartComponent implements OnInit {
           mode: 'vertical',
           scaleID: 'x-axis-0',
           value: 'March',
-          borderColor: 'orange',
+          borderColor: 'grey',
           borderWidth: 2,
           label: {
             enabled: true,
@@ -81,30 +88,39 @@ export class LineChartComponent implements OnInit {
 
   }
 
-  getDataSinceApril() {
+  public getDataSinceApril() {
     this.service.getDataApril().subscribe(
       response => {
         this.dataSinceApril = response;
         console.log(this.dataSinceApril);
-
         this.setData();
       }
+
     )
+
   }
 
   public setData() {
     //for (let i = 0; i < this.lineChartData.length; i++) {
+      console.log("setting data..");
+
+      console.log(this.dataSinceApril);
+
+      this.lineChartData[0].data[0] = 0;
+      this.lineChartData[1].data[0] = 0;
+      this.lineChartData[2].data[0] = 0;
+
       for (let j = 1; j < 222; j++) {
         this.lineChartData[0].data[j] = this.dataSinceApril[j].TotalDeaths + this.lineChartData[0].data[j-1];
       }
 
-      for (let j = 1; j < 222; j++) {
-        this.lineChartData[1].data[j] = this.dataSinceApril[j].TotalRecovered + this.lineChartData[1].data[j-1];
-      }
+       for (let j = 1; j < 222; j++) {
+         this.lineChartData[1].data[j] = this.dataSinceApril[j].TotalRecovered + this.lineChartData[1].data[j-1];
+       }
 
-      for (let j = 1; j < 222; j++) {
-        this.lineChartData[2].data[j] = this.dataSinceApril[j].TotalConfirmed + this.lineChartData[2].data[j-1];
-      }
+       for (let j = 1; j < 222; j++) {
+         this.lineChartData[2].data[j] = this.dataSinceApril[j].TotalConfirmed + this.lineChartData[2].data[j-1];
+       }
     //}
     this.chart.update();
   }
