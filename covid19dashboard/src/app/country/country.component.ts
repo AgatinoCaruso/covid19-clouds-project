@@ -13,6 +13,9 @@ export class CountryComponent implements OnInit {
     summaryData: SummaryData;
     countryData: CountryData;
     Slug: string;
+    activeCases: number;
+    recoveryRate: number;
+    mortalityRate: number;
 
     constructor(private service: DataService, private actRoute: ActivatedRoute) {
     this.Slug = this.actRoute.snapshot.params.Slug;
@@ -27,6 +30,9 @@ export class CountryComponent implements OnInit {
         response => {
           this.summaryData = response;
           this.getCountryData();
+          this.getActiveCases();
+          this.getRecoveryRate();
+          this.getMortalityRate();
         }
       )
     }
@@ -34,5 +40,28 @@ export class CountryComponent implements OnInit {
     getCountryData() {
       this.countryData = this.summaryData.Countries.find(x => x.Slug == this.Slug);
     }
+
+    getActiveCases() {
+      this.activeCases = ((this.countryData?.TotalConfirmed)
+                         -(this.countryData?.TotalRecovered)
+                         -(this.countryData?.TotalDeaths));
+    }
+
+    getRecoveryRate() {
+      this.recoveryRate =
+
+                             this.countryData?.TotalRecovered
+                                                /
+                            this.countryData?.TotalConfirmed * 100;
+    }
+
+    getMortalityRate() {
+      this.mortalityRate =
+
+                             this.countryData?.TotalDeaths
+                                                /
+                            this.countryData?.TotalConfirmed * 100;
+    }
+
 
 }

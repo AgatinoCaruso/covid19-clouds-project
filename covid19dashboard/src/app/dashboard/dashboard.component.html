@@ -38,7 +38,7 @@
             </tr>
             <tr class="table-info">
                 <td class="border-white"><p class="text-left">Recovery Rate</p></td>
-                <td class="border-white"><p class="text-right">idk</p></td>
+                <td class="border-white"><p class="text-right">{{recoveryRate | number}}%</p></td>
             </tr>
             <tr class="table-danger">
                 <td class="border-white"><p class="text-left">Total Deaths</p></td>
@@ -50,7 +50,7 @@
             </tr>
             <tr class="table-danger">
                 <td class="border-white"><p class="text-left">Mortality Rate</p></td>
-                <td class="border-white"><p class="text-right">idk</p></td>
+                <td class="border-white"><p class="text-right">{{mortalityRate | number}}%</p></td>
             </tr>
         </tbody>
       </table>
@@ -161,17 +161,18 @@
 
 <!-- Table -->
 <table class="table table-bordered table-center">
+
   <thead>
-    <th class="border-white table-dark"><p>Country</p></th>
-    <th class="border-white table-warning"><p>New Cases</p></th>
-    <th class="border-white table-warning"><p>New Cases</p></th>
-    <th class="border-white table-primary"><p>New Recoveries</p></th>
-    <th class="border-white table-primary"><p>Total Recoveries</p></th>
-    <th class="border-white table-danger"><p>New Deaths</p></th>
-    <th class="border-white table-danger"><p>Total Deaths</p></th>
+    <th class="border-white table-dark"><p>Country</p><i class="fa fa-fw fa-sort"></i></th>
+    <th class="border-white table-warning"><p>New Cases</p><i class="fa fa-fw fa-sort"></i></th>
+    <th class="border-white table-warning"><p>Total Cases</p><i class="fa fa-fw fa-sort"></i></th>
+    <th class="border-white table-primary"><p>New Recoveries</p><i class="fa fa-fw fa-sort"></i></th>
+    <th class="border-white table-primary"><p>Total Recoveries</p><i class="fa fa-fw fa-sort"></i></th>
+    <th class="border-white table-danger"><p>New Deaths</p><i class="fa fa-fw fa-sort"></i></th>
+    <th class="border-white table-danger"><p>Total Deaths</p><i class="fa fa-fw fa-sort"></i></th>
   </thead>
   <tbody>
-      <tr *ngFor="let country of summaryData.Countries">
+      <tr *ngFor="let country of summaryData?.Countries">
           <td class="border-white table-dark"><a href="dashboard/{{country.Slug}}" class="text-white">{{country.Country}}</a></td>
           <td class="border-white table-warning"><p class="text-right">{{country?.NewConfirmed | number}}</p></td>
           <td class="border-white table-warning"><p class="text-right">{{country?.TotalConfirmed | number}}</p></td>

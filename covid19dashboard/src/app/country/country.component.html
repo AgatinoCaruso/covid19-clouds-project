@@ -26,7 +26,7 @@
             </tr>
             <tr class="table-warning">
                 <td class="border-white"><p class="text-left">Active Cases</p></td>
-                <td class="border-white"><p class="text-right">idk</p></td>
+                <td class="border-white"><p class="text-right">{{activeCases | number}}</p></td>
             </tr>
             <tr class="table-info">
                 <td class="border-white"><p class="text-left">Total Recovered</p></td>
@@ -38,7 +38,7 @@
             </tr>
             <tr class="table-info">
                 <td class="border-white"><p class="text-left">Recovery Rate</p></td>
-                <td class="border-white"><p class="text-right">idk</p></td>
+                <td class="border-white"><p class="text-right">{{recoveryRate | number}}%</p></td>
             </tr>
             <tr class="table-danger">
                 <td class="border-white"><p class="text-left">Total Deaths</p></td>
@@ -50,7 +50,7 @@
             </tr>
             <tr class="table-danger">
                 <td class="border-white"><p class="text-left">Mortality Rate</p></td>
-                <td class="border-white"><p class="text-right">idk</p></td>
+                <td class="border-white"><p class="text-right">{{mortalityRate | number}}%</p></td>
             </tr>
         </tbody>
       </table>

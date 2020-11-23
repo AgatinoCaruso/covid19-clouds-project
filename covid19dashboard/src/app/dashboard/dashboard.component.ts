@@ -12,6 +12,8 @@ export class DashboardComponent implements OnInit {
     title = 'covid19dashboard';
     summaryData: SummaryData;
     activeCases: number;
+    recoveryRate: number;
+    mortalityRate: number;
     //highlyConfirmedData: Array<CountryData>;
     //highlyDeathData: Array<CountryData>;
     //highlyRecoveredData: Array<CountryData>;
@@ -32,7 +34,8 @@ export class DashboardComponent implements OnInit {
         response => {
           this.summaryData = response;
           this.getActiveCases();
-          //this.getSortedData();
+          this.getRecoveryRate();
+          this.getMortalityRate();
         }
       )
     }
@@ -42,11 +45,21 @@ export class DashboardComponent implements OnInit {
                          -(this.summaryData?.Global?.TotalRecovered)
                          -(this.summaryData?.Global?.TotalDeaths));
     }
-    /*getSortedData() {
-      let data = JSON.parse(JSON.stringify(this.summaryData.Countries));
-      this.highlyConfirmedData = data.sort((a, b) => b.TotalConfirmed - a.TotalConfirmed).slice(0, 10);
-      this.highlyDeathData = data.sort((a, b) => b.TotalDeaths - a.TotalDeaths).slice(0, 10);
-      this.highlyRecoveredData = data.sort((a, b) => b.TotalRecovered - a.TotalRecovered).slice(0, 10);
-    }*/
+
+    getRecoveryRate() {
+      this.recoveryRate =
+
+                             this.summaryData?.Global?.TotalRecovered
+                                                /
+                            this.summaryData?.Global?.TotalConfirmed * 100;
+    }
+
+    getMortalityRate() {
+      this.mortalityRate =
+
+                             this.summaryData?.Global?.TotalDeaths
+                                                /
+                            this.summaryData?.Global?.TotalConfirmed * 100;
+    }
 
 }
