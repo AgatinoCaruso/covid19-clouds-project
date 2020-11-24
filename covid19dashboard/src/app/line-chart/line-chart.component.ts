@@ -14,6 +14,8 @@ import { WeeklyData } from '../models';
 export class LineChartComponent implements OnInit {
 
   dataSinceApril: WeeklyData;
+  today: Date;
+  AprilThirt: Date;
 
   // pointRadius=0 removes dots on data
   public lineChartData: ChartDataSets[] = [
@@ -57,6 +59,7 @@ export class LineChartComponent implements OnInit {
     this.service.getDataApril().subscribe(
       response => {
         this.dataSinceApril = response;
+        this.setCurrentDates();
         this.setData();
       }
 
@@ -71,18 +74,40 @@ export class LineChartComponent implements OnInit {
       this.lineChartData[1].data[0] = 0;
       this.lineChartData[2].data[0] = 0;
 
-      for (let j = 1; j < 222; j++) {
+    //   console.log("AprilThirt: " + this.service.getReverseAPIFormatDate(this.AprilThirt));
+    //   console.log("getDaysFromAprilThirt: " + this.getDaysFromAprilThirt());
+    // //  this.lineChartLabels[0] = this.service.getReverseAPIFormatDate(this.AprilThirt);
+
+      for (let j = 1; j < this.getDaysFromAprilThirt()-1; j++) {
+        this.lineChartLabels[j] = this.service.getReverseAPIFormatDate(new Date(this.AprilThirt.getFullYear(), this.AprilThirt.getMonth(), this.AprilThirt.getDate() + j));
         this.lineChartData[0].data[j] = this.dataSinceApril[j].TotalDeaths + this.lineChartData[0].data[j-1];
       }
 
-       for (let j = 1; j < 222; j++) {
+       for (let j = 1; j < this.getDaysFromAprilThirt()-1; j++) {
          this.lineChartData[1].data[j] = this.dataSinceApril[j].TotalRecovered + this.lineChartData[1].data[j-1];
        }
 
-       for (let j = 1; j < 222; j++) {
+       for (let j = 1; j < this.getDaysFromAprilThirt()-1; j++) {
          this.lineChartData[2].data[j] = this.dataSinceApril[j].TotalConfirmed + this.lineChartData[2].data[j-1];
        }
 
     this.chart.update();
   }
+
+  private setCurrentDates() {
+    this.today = new Date();
+    this.AprilThirt = new Date(2020, 3, 13); // January is zero!!
+  }
+
+  private getDaysFromAprilThirt() {
+    // To calculate the time difference of two dates
+    var Difference_In_Time = this.today.getTime() - this.AprilThirt.getTime();
+
+    // To calculate the no. of days between two dates
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+    return Difference_In_Days;
+
+  }
+
 }

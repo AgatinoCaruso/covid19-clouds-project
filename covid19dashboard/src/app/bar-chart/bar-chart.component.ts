@@ -15,7 +15,8 @@ import * as pluginAnnotations from 'chartjs-plugin-annotation';
 export class BarChartComponent implements OnInit {
   weeklyData: WeeklyData;
   Slug: string;
-
+  today: Date;
+  lastWeek: Date;
 
 
   public barChartOptions: ChartOptions = {
@@ -54,7 +55,7 @@ export class BarChartComponent implements OnInit {
     this.service.getWeeklyData().subscribe(
       response => {
         this.weeklyData = response;
-
+        this.setCurrentDates();
         this.setData();
 
       }
@@ -62,6 +63,11 @@ export class BarChartComponent implements OnInit {
   }
 
   public setData() {
+
+  for (let i = 0; i < 7; i++) {
+        this.barChartLabels[i] = this.service.getReverseAPIFormatDate(new Date(this.lastWeek.getFullYear(), this.lastWeek.getMonth(), this.lastWeek.getDate() + i));
+      }
+
     this.barChartData[0].data = [
       this.weeklyData[0].TotalDeaths,
       this.weeklyData[1].TotalDeaths,
@@ -89,4 +95,10 @@ export class BarChartComponent implements OnInit {
       this.weeklyData[5].TotalConfirmed,
       this.weeklyData[6].TotalConfirmed ];
   }
+
+  private setCurrentDates() {
+    this.today = new Date();
+    this.lastWeek = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() - 7);
+  }
+
 }

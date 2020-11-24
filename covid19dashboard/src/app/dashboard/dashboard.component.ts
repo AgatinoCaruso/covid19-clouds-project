@@ -61,5 +61,4 @@ export class DashboardComponent implements OnInit {
                                                 /
                             this.summaryData?.Global?.TotalConfirmed * 100;
     }
-
 }
