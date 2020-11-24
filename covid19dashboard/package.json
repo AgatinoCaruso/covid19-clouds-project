@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "~11.0.0",
     "@angular/router": "~11.0.0",
     "@types/chart.js": "^2.9.27",
+    "angular-tablesort": "^1.6.1",
     "bootstrap": "^4.5.3",
     "chart.js": "^2.9.4",
     "chartjs-plugin-annotation": "^0.5.7",

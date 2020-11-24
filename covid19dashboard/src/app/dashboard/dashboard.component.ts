@@ -61,4 +61,9 @@ export class DashboardComponent implements OnInit {
                                                 /
                             this.summaryData?.Global?.TotalConfirmed * 100;
     }
+
+    // onClick(OrderBy) {
+    //   console.log('Will order for ' + OrderBy);
+    //  //TODO
+    // }
 }
