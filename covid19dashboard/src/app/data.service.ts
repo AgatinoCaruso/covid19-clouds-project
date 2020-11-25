@@ -37,6 +37,14 @@ export class DataService {
     return result;
   }
 
+  public getDateFromAPIDate(date: String) { //returns a Date from yyyy-mm-dd
+    var yyyy = date[0] + date[1] + date[2] + date[3];
+    var mm = date[5] + date[6];
+    var dd = date[8] + date[9];
+
+    return new Date(parseInt(yyyy), parseInt(mm)-1, parseInt(dd));
+  }
+
   private setCurrentDates() {
     this.today = new Date();
     this.lastWeek = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() - 7);

@@ -18,12 +18,12 @@ export class LineChartComponent implements OnInit {
   AprilThirt: Date;
   Slug: string;
   countryAllDataFromZero: CountryAllDataFromZero;
-
+  //   { data: [], pointRadius: 0, label: 'Total Deaths' },
   // pointRadius=0 removes dots on data
   public lineChartData: ChartDataSets[] = [
-    { data: [], pointRadius: 0, label: 'Total Deaths' },
-    { data: [], pointRadius: 0, label: 'Total Recovered' },
-    { data: [], pointRadius: 0, label: 'Total Cases' }
+    { data: [], label: 'Total Deaths' },
+    { data: [], label: 'Total Recovered' },
+    { data: [], label: 'Total Cases' }
   ];
   public lineChartLabels: Label[] = ["1"];
   public lineChartOptions: (ChartOptions) = {
@@ -92,22 +92,23 @@ export class LineChartComponent implements OnInit {
       this.lineChartData[1].data[0] = this.countryAllDataFromZero[0].Recovered;
       this.lineChartData[2].data[0] = this.countryAllDataFromZero[0].Confirmed;
 
-    //   console.log("AprilThirt: " + this.service.getReverseAPIFormatDate(this.AprilThirt));
-    //   console.log("getDaysFromAprilThirt: " + this.getDaysFromAprilThirt());
-    // //  this.lineChartLabels[0] = this.service.getReverseAPIFormatDate(this.AprilThirt);
 
-      for (let j = 1; j < this.getDaysFromAprilThirt()-1; j++) {
-        this.lineChartLabels[j] = this.service.getReverseAPIFormatDate(new Date(this.AprilThirt.getFullYear(), this.AprilThirt.getMonth(), this.AprilThirt.getDate() + j));
-        this.lineChartData[0].data[j] = this.countryAllDataFromZero[j].Deaths + this.lineChartData[0].data[j-1];
+    var firstCaseDate = this.countryAllDataFromZero[0].Date;
+
+    firstCaseDate = this.service.getDateFromAPIDate(firstCaseDate);
+
+    var daysFromTheFirstCase = this.getDaysFromDate(firstCaseDate);
+
+    this.lineChartLabels[0] = this.service.getReverseAPIFormatDate(firstCaseDate);
+
+
+      for (let j = 0; j < firstCaseDate-1; j++) {
+        this.lineChartLabels[j] = this.service.getReverseAPIFormatDate(new Date(firstCaseDate.getFullYear(), firstCaseDate.getMonth(), firstCaseDate.getDate() + j));
+
+        this.lineChartData[0].data[j] = this.countryAllDataFromZero[j].Deaths;// + this.lineChartData[0].data[j-1];
+        this.lineChartData[1].data[j] = this.countryAllDataFromZero[j].Recovered;// + this.lineChartData[1].data[j-1];
+        this.lineChartData[2].data[j] = this.countryAllDataFromZero[j].Confirmed;// + this.lineChartData[2].data[j-1];
       }
-
-       for (let j = 1; j < this.getDaysFromAprilThirt()-1; j++) {
-         this.lineChartData[1].data[j] = this.countryAllDataFromZero[j].Recovered + this.lineChartData[1].data[j-1];
-       }
-
-       for (let j = 1; j < this.getDaysFromAprilThirt()-1; j++) {
-         this.lineChartData[2].data[j] = this.countryAllDataFromZero[j].Confirmed + this.lineChartData[2].data[j-1];
-       }
 
     this.chart.update();
   }
@@ -119,22 +120,15 @@ export class LineChartComponent implements OnInit {
       this.lineChartData[1].data[0] = this.dataSinceApril[0].TotalRecovered;
       this.lineChartData[2].data[0] = this.dataSinceApril[0].TotalConfirmed;
 
-    //   console.log("AprilThirt: " + this.service.getReverseAPIFormatDate(this.AprilThirt));
-    //   console.log("getDaysFromAprilThirt: " + this.getDaysFromAprilThirt());
-    // //  this.lineChartLabels[0] = this.service.getReverseAPIFormatDate(this.AprilThirt);
+      this.lineChartLabels[0] = this.service.getReverseAPIFormatDate(this.AprilThirt);
+
 
       for (let j = 1; j < this.getDaysFromAprilThirt()-1; j++) {
         this.lineChartLabels[j] = this.service.getReverseAPIFormatDate(new Date(this.AprilThirt.getFullYear(), this.AprilThirt.getMonth(), this.AprilThirt.getDate() + j));
         this.lineChartData[0].data[j] = this.dataSinceApril[j].TotalDeaths + this.lineChartData[0].data[j-1];
+        this.lineChartData[1].data[j] = this.dataSinceApril[j].TotalRecovered + this.lineChartData[1].data[j-1];
+        this.lineChartData[2].data[j] = this.dataSinceApril[j].TotalConfirmed + this.lineChartData[2].data[j-1];
       }
-
-       for (let j = 1; j < this.getDaysFromAprilThirt()-1; j++) {
-         this.lineChartData[1].data[j] = this.dataSinceApril[j].TotalRecovered + this.lineChartData[1].data[j-1];
-       }
-
-       for (let j = 1; j < this.getDaysFromAprilThirt()-1; j++) {
-         this.lineChartData[2].data[j] = this.dataSinceApril[j].TotalConfirmed + this.lineChartData[2].data[j-1];
-       }
 
     this.chart.update();
   }
@@ -145,8 +139,14 @@ export class LineChartComponent implements OnInit {
   }
 
   private getDaysFromAprilThirt() {
+
+   return this.getDaysFromDate(this.AprilThirt);
+
+  }
+
+  private getDaysFromDate(date: Date) {
     // To calculate the time difference of two dates
-    var Difference_In_Time = this.today.getTime() - this.AprilThirt.getTime();
+    var Difference_In_Time = this.today.getTime() - date.getTime();
 
     // To calculate the no. of days between two dates
     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
