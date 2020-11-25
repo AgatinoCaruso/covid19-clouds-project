@@ -62,8 +62,8 @@ export class LineChartComponent implements OnInit {
       if(params['Slug']) { //in a country
         this.service.getDataCountryFromFirstCase(params['Slug']).subscribe(
           response => {
-            this.dataSinceApril = response;
-            console.log(this.dataSinceApril);
+            this.countryAllDataFromZero = response;
+            console.log(this.countryAllDataFromZero);
             this.setCurrentDates();
             this.setDataCountry();
        console.log("getDataCountryFromFirstCase, country, Slug: " + this.Slug);
@@ -74,8 +74,8 @@ export class LineChartComponent implements OnInit {
         else {
           this.service.getDataApril().subscribe(
             response => {
-              this.countryAllDataFromZero = response;
-              console.log(this.countryAllDataFromZero);
+              this.dataSinceApril = response;
+              console.log(this.dataSinceApril);
               this.setCurrentDates();
               this.setData();
           console.log("getDataApril, dashboard, Slug: " + this.Slug);
@@ -88,9 +88,9 @@ export class LineChartComponent implements OnInit {
   public setDataCountry() {
 
       // set first value to zero
-      this.lineChartData[0].data[0] = 0;
-      this.lineChartData[1].data[0] = 0;
-      this.lineChartData[2].data[0] = 0;
+      this.lineChartData[0].data[0] = this.countryAllDataFromZero[0].Deaths;
+      this.lineChartData[1].data[0] = this.countryAllDataFromZero[0].Recovered;
+      this.lineChartData[2].data[0] = this.countryAllDataFromZero[0].Confirmed;
 
     //   console.log("AprilThirt: " + this.service.getReverseAPIFormatDate(this.AprilThirt));
     //   console.log("getDaysFromAprilThirt: " + this.getDaysFromAprilThirt());
@@ -115,9 +115,9 @@ export class LineChartComponent implements OnInit {
   public setData() {
 
       // set first value to zero
-      this.lineChartData[0].data[0] = 0;
-      this.lineChartData[1].data[0] = 0;
-      this.lineChartData[2].data[0] = 0;
+      this.lineChartData[0].data[0] = this.dataSinceApril[0].TotalDeaths;
+      this.lineChartData[1].data[0] = this.dataSinceApril[0].TotalRecovered;
+      this.lineChartData[2].data[0] = this.dataSinceApril[0].TotalConfirmed;
 
     //   console.log("AprilThirt: " + this.service.getReverseAPIFormatDate(this.AprilThirt));
     //   console.log("getDaysFromAprilThirt: " + this.getDaysFromAprilThirt());
