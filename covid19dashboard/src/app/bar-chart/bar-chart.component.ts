@@ -63,10 +63,10 @@ export class BarChartComponent implements OnInit {
 
             this.service.getWeeklyData(params['Slug']).subscribe(
               response => {
-              //     console.log("getWeeklyData, country, Slug: " + this.Slug);
-                   this.weeklyData = response;
-                    this.setCurrentDates();
-                    this.setCountryData();
+              //    console.log("getWeeklyData, country, Slug: " + this.Slug);
+                  this.weeklyData = response;
+                  this.setCurrentDates();
+                  this.setCountryData();
               }
             )
           }
@@ -75,7 +75,7 @@ export class BarChartComponent implements OnInit {
     else { // in dashboard
       this.service.getDataApril().subscribe(
         response => {
-        //  console.log("getWeeklyData, dashboard, Slug: " + this.Slug);
+          //  console.log("getWeeklyData, dashboard, Slug: " + this.Slug);
           this.weeklyData = response;
           this.setCurrentDates();
           this.setGlobalData();
@@ -83,7 +83,7 @@ export class BarChartComponent implements OnInit {
       )
     }
 
-//  console.log("getWeeklyData, End");
+  //  console.log("getWeeklyData, End");
 }
 
   public setCountryData() {
@@ -150,6 +150,7 @@ export class BarChartComponent implements OnInit {
         this.weeklyData[4].TotalConfirmed,
         this.weeklyData[5].TotalConfirmed,
         this.weeklyData[6].TotalConfirmed ];
+      
   }
 
   getCountryData() {

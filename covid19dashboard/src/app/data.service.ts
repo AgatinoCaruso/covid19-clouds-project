@@ -81,9 +81,9 @@ export class DataService {
 
 
     if(Slug) { // country page
-        this.urlDates = "https://api.covid19api.com/live/country/"+Slug+"/status/confirmed/date/" + this.lastWeek + "T13:13:30Z";
+        this.urlDates = "https://api.covid19api.com/live/country/"+Slug+"/status/confirmed/date/" + this.lastWeek + "T00:00:00Z";
       //  https://api.covid19api.com/live/country/south-africa/status/confirmed/date/2020-03-21T13:13:30Z
-      //  console.log("Service - getWeeklyData, urlDates: " + this.urlDates);
+      console.log("Service - getWeeklyData, urlDates: " + this.urlDates);
       return this.http.get(this.urlDates)
         .pipe((response) => response);
     }

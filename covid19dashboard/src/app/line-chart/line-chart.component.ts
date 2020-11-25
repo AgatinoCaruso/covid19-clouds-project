@@ -87,7 +87,7 @@ export class LineChartComponent implements OnInit {
 
   public setDataCountry() {
 
-      // set first value to zero
+      // set first values
       this.lineChartData[0].data[0] = this.countryAllDataFromZero[0].Deaths;
       this.lineChartData[1].data[0] = this.countryAllDataFromZero[0].Recovered;
       this.lineChartData[2].data[0] = this.countryAllDataFromZero[0].Confirmed;
@@ -102,7 +102,7 @@ export class LineChartComponent implements OnInit {
     this.lineChartLabels[0] = this.service.getReverseAPIFormatDate(firstCaseDate);
 
 
-      for (let j = 0; j < firstCaseDate-1; j++) {
+      for (let j = 1; j < daysFromTheFirstCase-1; j++) {
         this.lineChartLabels[j] = this.service.getReverseAPIFormatDate(new Date(firstCaseDate.getFullYear(), firstCaseDate.getMonth(), firstCaseDate.getDate() + j));
 
         this.lineChartData[0].data[j] = this.countryAllDataFromZero[j].Deaths;// + this.lineChartData[0].data[j-1];
