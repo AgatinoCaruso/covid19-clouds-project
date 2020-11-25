@@ -23,3 +23,22 @@ export class CountryData extends GlobalData {
 export class WeeklyData {
      WeekData: Array<GlobalData>
 }
+
+export class CountryDataFromZero {
+     Active: number;
+     City: string;
+    ​​ CityCode: string;
+    ​​​ Confirmed: number;
+    ​​​ Country: string;
+    ​​​ CountryCode: string;
+    ​​​ Date: string;
+    ​​​ Deaths: number;
+    ​​​ Lat: string;
+    ​​​ Lon: string;
+    ​​​ Province: string;
+    ​​​ Recovered: number;
+}
+
+export class CountryAllDataFromZero {
+     SingleCountryDataFromZero: Array<CountryDataFromZero>
+}

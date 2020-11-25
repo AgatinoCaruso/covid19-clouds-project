@@ -3,7 +3,8 @@ import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
 import { DataService } from '../data.service';
-import { WeeklyData } from '../models';
+import { WeeklyData, CountryData } from '../models';
+import { ActivatedRoute } from '@angular/router';
 
 
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
@@ -17,6 +18,7 @@ export class BarChartComponent implements OnInit {
   Slug: string;
   today: Date;
   lastWeek: Date;
+  countryData: Array<CountryData>;
 
 
   public barChartOptions: ChartOptions = {
@@ -40,65 +42,129 @@ export class BarChartComponent implements OnInit {
     { backgroundColor: '#ffeeba' }
   ];
   public barChartData: ChartDataSets[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Daily Deaths' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Daily Recovered' },
-    { data: [10, 20, 25, 50, 45, 60, 70], label: 'Daily New Cases' },
+    { data: [0, 0, 0, 0, 0, 0, 0], label: 'Daily Deaths' },
+    { data: [0, 0, 0, 0, 0, 0, 0], label: 'Daily Recovered' },
+    { data: [0, 0, 0, 0, 0, 0, 0], label: 'Daily New Cases' },
   ];
 
-  constructor(private service: DataService) { }
+  constructor(private service: DataService, private actRoute: ActivatedRoute) {
+    this.Slug = this.actRoute.snapshot.params.Slug;
+  }
 
   ngOnInit(): void {
     this.getWeeklyData();
   }
 
   getWeeklyData() {
-    this.service.getWeeklyData().subscribe(
-      response => {
-        this.weeklyData = response;
-        this.setCurrentDates();
-        this.setData();
 
+     if(this.Slug) { //in a country
+        this.actRoute.params.subscribe(params => {
+          if(params['Slug']) {
+
+            this.service.getWeeklyData(params['Slug']).subscribe(
+              response => {
+              //     console.log("getWeeklyData, country, Slug: " + this.Slug);
+                   this.weeklyData = response;
+                    this.setCurrentDates();
+                    this.setCountryData();
+              }
+            )
+          }
+      })
+    }
+    else { // in dashboard
+      this.service.getDataApril().subscribe(
+        response => {
+        //  console.log("getWeeklyData, dashboard, Slug: " + this.Slug);
+          this.weeklyData = response;
+          this.setCurrentDates();
+          this.setGlobalData();
+        }
+      )
+    }
+
+//  console.log("getWeeklyData, End");
+}
+
+  public setCountryData() {
+
+    if (typeof  this.countryData !== 'undefined' &&   this.countryData.length > 0) {
+
+      this.barChartData[0].data = [
+        this.countryData[0].TotalDeaths,
+        this.countryData[1].TotalDeaths,
+        this.countryData[2].TotalDeaths,
+        this.countryData[3].TotalDeaths,
+        this.countryData[4].TotalDeaths,
+        this.countryData[5].TotalDeaths,
+        this.countryData[6].TotalDeaths ];
+
+      this.barChartData[1].data = [
+        this.countryData[0].TotalRecovered,
+        this.countryData[1].TotalRecovered,
+        this.countryData[2].TotalRecovered,
+        this.countryData[3].TotalRecovered,
+        this.countryData[4].TotalRecovered,
+        this.countryData[5].TotalRecovered,
+        this.countryData[6].TotalRecovered ];
+
+      this.barChartData[2].data = [
+        this.countryData[0].TotalConfirmed,
+        this.countryData[1].TotalConfirmed,
+        this.countryData[2].TotalConfirmed,
+        this.countryData[3].TotalConfirmed,
+        this.countryData[4].TotalConfirmed,
+        this.countryData[5].TotalConfirmed,
+        this.countryData[6].TotalConfirmed ];
       }
-    )
+      else {
+        console.log("Country Bar Diagram no data!");
+      }
+    }
+
+    public setGlobalData() {
+
+      this.barChartData[0].data = [
+        this.weeklyData[0].TotalDeaths,
+        this.weeklyData[1].TotalDeaths,
+        this.weeklyData[2].TotalDeaths,
+        this.weeklyData[3].TotalDeaths,
+        this.weeklyData[4].TotalDeaths,
+        this.weeklyData[5].TotalDeaths,
+        this.weeklyData[6].TotalDeaths ];
+
+      this.barChartData[1].data = [
+        this.weeklyData[0].TotalRecovered,
+        this.weeklyData[1].TotalRecovered,
+        this.weeklyData[2].TotalRecovered,
+        this.weeklyData[3].TotalRecovered,
+        this.weeklyData[4].TotalRecovered,
+        this.weeklyData[5].TotalRecovered,
+        this.weeklyData[6].TotalRecovered ];
+
+      this.barChartData[2].data = [
+        this.weeklyData[0].TotalConfirmed,
+        this.weeklyData[1].TotalConfirmed,
+        this.weeklyData[2].TotalConfirmed,
+        this.weeklyData[3].TotalConfirmed,
+        this.weeklyData[4].TotalConfirmed,
+        this.weeklyData[5].TotalConfirmed,
+        this.weeklyData[6].TotalConfirmed ];
   }
 
-  public setData() {
-
-  for (let i = 0; i < 7; i++) {
-        this.barChartLabels[i] = this.service.getReverseAPIFormatDate(new Date(this.lastWeek.getFullYear(), this.lastWeek.getMonth(), this.lastWeek.getDate() + i));
-      }
-
-    this.barChartData[0].data = [
-      this.weeklyData[0].TotalDeaths,
-      this.weeklyData[1].TotalDeaths,
-      this.weeklyData[2].TotalDeaths,
-      this.weeklyData[3].TotalDeaths,
-      this.weeklyData[4].TotalDeaths,
-      this.weeklyData[5].TotalDeaths,
-      this.weeklyData[6].TotalDeaths ];
-
-    this.barChartData[1].data = [
-      this.weeklyData[0].TotalRecovered,
-      this.weeklyData[1].TotalRecovered,
-      this.weeklyData[2].TotalRecovered,
-      this.weeklyData[3].TotalRecovered,
-      this.weeklyData[4].TotalRecovered,
-      this.weeklyData[5].TotalRecovered,
-      this.weeklyData[6].TotalRecovered ];
-
-    this.barChartData[2].data = [
-      this.weeklyData[0].TotalConfirmed,
-      this.weeklyData[1].TotalConfirmed,
-      this.weeklyData[2].TotalConfirmed,
-      this.weeklyData[3].TotalConfirmed,
-      this.weeklyData[4].TotalConfirmed,
-      this.weeklyData[5].TotalConfirmed,
-      this.weeklyData[6].TotalConfirmed ];
+  getCountryData() {
+    for (let i = 0; i < 7; i++) {
+      this.countryData[i] = this.weeklyData[i].Countries.find(x => x.Slug == this.Slug);
+    }
   }
 
-  private setCurrentDates() {
+  setCurrentDates() {
     this.today = new Date();
     this.lastWeek = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() - 7);
+
+    for (let i = 0; i < 7; i++) {
+          this.barChartLabels[i] = this.service.getReverseAPIFormatDate(new Date(this.lastWeek.getFullYear(), this.lastWeek.getMonth(), this.lastWeek.getDate() + i));
+        }
   }
 
 }

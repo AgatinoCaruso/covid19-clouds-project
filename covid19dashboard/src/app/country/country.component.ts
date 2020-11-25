@@ -26,7 +26,9 @@ export class CountryComponent implements OnInit {
     }
 
     getAllData() {
-      this.service.getData().subscribe(
+      this.actRoute.params.subscribe(params => {
+        if(params['Slug']) {
+      this.service.getDataParam(params['Slug']).subscribe(
         response => {
           this.summaryData = response;
           this.getCountryData();
@@ -36,6 +38,8 @@ export class CountryComponent implements OnInit {
         }
       )
     }
+  })
+}
 
     getCountryData() {
       this.countryData = this.summaryData.Countries.find(x => x.Slug == this.Slug);

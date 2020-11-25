@@ -13,6 +13,7 @@ export class DataService {
   private urlApril: string;
   private today: any;
   private lastWeek: any;
+  private urlCountryFromFirstCase: string;
 
   constructor(private http: HttpClient) {}
 
@@ -45,16 +46,55 @@ export class DataService {
   }
 
   getData(): Observable<any> {
+
     return this.http.get(this.url)
       .pipe((response) => response);
   }
 
-  getWeeklyData(): Observable<any> {
+  getDataParam(Slug): Observable<any> {
 
+//    console.log(Slug);
+
+    if(Slug) { // country page
+      return this.http.get(this.url)
+        .pipe((response) => response);
+    }
+    else { // dashboard
+      return this.http.get(this.url)
+        .pipe((response) => response);
+    }
+  }
+
+  getWeeklyData(Slug): Observable<any> {
+
+//  console.log("Service - getWeeklyData, Slug: " + Slug);
     this.setCurrentDates();
-    this.urlDates = "https://api.covid19api.com/world?from=" + this.lastWeek +"T00:00:00Z&to=" + this.today + "T00:00:00Z";
+  //  https://api.covid19api.com/country/south-africa/status/confirmed?from=2020-03-01T00:00:00Z&to=2020-04-01T00:00:00Z
 
-    return this.http.get(this.urlDates)
+
+    if(Slug) { // country page
+        this.urlDates = "https://api.covid19api.com/live/country/"+Slug+"/status/confirmed/date/" + this.lastWeek + "T13:13:30Z";
+      //  https://api.covid19api.com/live/country/south-africa/status/confirmed/date/2020-03-21T13:13:30Z
+      //  console.log("Service - getWeeklyData, urlDates: " + this.urlDates);
+      return this.http.get(this.urlDates)
+        .pipe((response) => response);
+    }
+   else {
+      this.urlDates = "https://api.covid19api.com/world?from=" + this.lastWeek +"T00:00:00Z&to=" + this.today + "T00:00:00Z";
+  //      console.log("Service - getWeeklyData, urlDates: " + this.urlDates);
+      return this.http.get(this.urlDates)
+        .pipe((response) => response);
+
+   }
+
+  }
+
+  getDataCountryFromFirstCase(Slug): Observable<any> {
+
+
+    this.urlCountryFromFirstCase ="https://api.covid19api.com/dayone/country/" + Slug;
+
+    return this.http.get(this.urlCountryFromFirstCase)
       .pipe((response) => response);
   }
 
@@ -66,4 +106,5 @@ export class DataService {
     return this.http.get(this.urlApril)
       .pipe((response) => response);
   }
+
 }
