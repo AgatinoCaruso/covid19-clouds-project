@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import firebase from 'firebase/app'
+import { AngularFireAuth } from '@angular/fire/auth'
+import { AngularFirestore} from '@angular/fire/firestore'
+import { User } from './user.model'
 @Injectable({
   providedIn: 'root'
 })
@@ -14,8 +17,34 @@ export class DataService {
   private today: any;
   private lastWeek: any;
   private urlCountryFromFirstCase: string;
+  private user: User;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private afAuth: AngularFireAuth, 
+              private firestore: AngularFirestore) {}
+
+
+  public async signInWithGoogle(): Promise<Boolean>{
+    const credentials = await this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+    
+    this.user = {
+     uid: credentials.user.uid,
+     displayName: credentials.user.displayName,
+     email: credentials.user.email
+    };
+
+    localStorage.setItem("user", JSON.stringify(this.user));
+    this.updateUserData();
+    return true;
+  }
+
+  // if user login again we just update the data
+  private updateUserData() {
+    this.firestore.collection("users").doc(this.user.uid).set({
+      uid: this.user.uid,
+      displayName: this.user.displayName,
+      email: this.user.email
+    }, { merge: true})
+  }
 
   public getAPIFormatDate(date: Date) {
 
@@ -25,6 +54,26 @@ export class DataService {
     var result = yyyy + '-' + mm + '-' + dd;
 
     return result;
+  }
+
+  public getLoggedUser() {
+    if(this.user == null && this.userSignedIn()) {
+      this.user = JSON.parse(localStorage.getItem("user"));
+    }
+
+    return this.user;
+  }
+
+  public userSignedIn() : boolean {
+    return JSON.parse(localStorage.getItem("user")) != null;
+  }
+
+  public signOut(): Boolean {
+    this.afAuth.signOut();
+    localStorage.removeItem("user");
+    this.user = null;
+    //TODO hide button
+    return false;
   }
 
   public getReverseAPIFormatDate(date: Date) {

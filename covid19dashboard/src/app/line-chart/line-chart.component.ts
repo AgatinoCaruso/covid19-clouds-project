@@ -88,9 +88,9 @@ export class LineChartComponent implements OnInit {
   public setDataCountry() {
 
       // set first values
-      this.lineChartData[0].data[0] = this.countryAllDataFromZero[0].Deaths;
-      this.lineChartData[1].data[0] = this.countryAllDataFromZero[0].Recovered;
-      this.lineChartData[2].data[0] = this.countryAllDataFromZero[0].Confirmed;
+      // this.lineChartData[0].data[0] = this.countryAllDataFromZero[0].Deaths;
+      // this.lineChartData[1].data[0] = this.countryAllDataFromZero[0].Recovered;
+      // this.lineChartData[2].data[0] = this.countryAllDataFromZero[0].Confirmed;
 
 
     var firstCaseDate = this.countryAllDataFromZero[0].Date;
@@ -105,9 +105,9 @@ export class LineChartComponent implements OnInit {
       for (let j = 1; j < daysFromTheFirstCase-1; j++) {
         this.lineChartLabels[j] = this.service.getReverseAPIFormatDate(new Date(firstCaseDate.getFullYear(), firstCaseDate.getMonth(), firstCaseDate.getDate() + j));
 
-        this.lineChartData[0].data[j] = this.countryAllDataFromZero[j].Deaths;// + this.lineChartData[0].data[j-1];
-        this.lineChartData[1].data[j] = this.countryAllDataFromZero[j].Recovered;// + this.lineChartData[1].data[j-1];
-        this.lineChartData[2].data[j] = this.countryAllDataFromZero[j].Confirmed;// + this.lineChartData[2].data[j-1];
+        // this.lineChartData[0].data[j] = this.countryAllDataFromZero[j].Deaths;// + this.lineChartData[0].data[j-1];
+        // this.lineChartData[1].data[j] = this.countryAllDataFromZero[j].Recovered;// + this.lineChartData[1].data[j-1];
+        // this.lineChartData[2].data[j] = this.countryAllDataFromZero[j].Confirmed;// + this.lineChartData[2].data[j-1];
       }
 
     this.chart.update();
@@ -116,9 +116,9 @@ export class LineChartComponent implements OnInit {
   public setData() {
 
       // set first value to zero
-      this.lineChartData[0].data[0] = this.dataSinceApril[0].TotalDeaths;
-      this.lineChartData[1].data[0] = this.dataSinceApril[0].TotalRecovered;
-      this.lineChartData[2].data[0] = this.dataSinceApril[0].TotalConfirmed;
+      // this.lineChartData[0].data[0] = this.dataSinceApril[0].TotalDeaths;
+      // this.lineChartData[1].data[0] = this.dataSinceApril[0].TotalRecovered;
+      // this.lineChartData[2].data[0] = this.dataSinceApril[0].TotalConfirmed;
 
       this.lineChartLabels[0] = this.service.getReverseAPIFormatDate(this.AprilThirt);
 

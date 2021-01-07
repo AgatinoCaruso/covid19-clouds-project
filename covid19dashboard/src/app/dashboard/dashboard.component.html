@@ -1,5 +1,8 @@
 <app-top-bar></app-top-bar>
 
+<app-user></app-user>
+
+
 <!-- ***Summary row*** -->
   <div class="row row-m-t">
    <div class="col-xs-1 col-md-2">&nbsp;</div>
@@ -18,11 +21,11 @@
         <tbody>
             <tr class="table-warning">
                 <td class="border-white"><p class="text-left text-middle">Total Cases</p></td>
-                <td class="border-white"><p class="text-right">{{summaryData?.Global?.TotalConfirmed | number}}</p></td>
+                <td class="border-white"><p class="text-right">{{summaryData.Global.TotalConfirmed | number}}</p></td>
             </tr>
             <tr class="table-warning">
                 <td class="border-white"><p class="text-left">New Cases</p></td>
-                <td class="border-white"><p class="text-right">{{summaryData?.Global?.NewConfirmed | number}}</p></td>
+                <td class="border-white"><p class="text-right">{{summaryData.Global.NewConfirmed | number}}</p></td>
             </tr>
             <tr class="table-warning">
                 <td class="border-white"><p class="text-left">Active Cases</p></td>
@@ -30,11 +33,11 @@
             </tr>
             <tr class="table-info">
                 <td class="border-white"><p class="text-left">Total Recovered</p></td>
-                <td class="border-white"><p class="text-right">{{summaryData?.Global?.TotalRecovered | number}}</p></td>
+                <td class="border-white"><p class="text-right">{{summaryData.Global.TotalRecovered | number}}</p></td>
             </tr>
             <tr class="table-info">
                 <td class="border-white"><p class="text-left">New Recovered</p></td>
-                <td class="border-white"><p class="text-right">{{summaryData?.Global?.NewRecovered | number}}</p></td>
+                <td class="border-white"><p class="text-right">{{summaryData.Global.NewRecovered | number}}</p></td>
             </tr>
             <tr class="table-info">
                 <td class="border-white"><p class="text-left">Recovery Rate</p></td>
@@ -42,11 +45,11 @@
             </tr>
             <tr class="table-danger">
                 <td class="border-white"><p class="text-left">Total Deaths</p></td>
-                <td class="border-white"><p class="text-right">{{summaryData?.Global?.TotalDeaths | number}}</p></td>
+                <td class="border-white"><p class="text-right">{{summaryData.Global.TotalDeaths | number}}</p></td>
             </tr>
             <tr class="table-danger">
                 <td class="border-white"><p class="text-left">New Deaths</p></td>
-                <td class="border-white"><p class="text-right">{{summaryData?.Global?.NewDeaths | number}}</p></td>
+                <td class="border-white"><p class="text-right">{{summaryData.Global.NewDeaths | number}}</p></td>
             </tr>
             <tr class="table-danger">
                 <td class="border-white"><p class="text-left">Mortality Rate</p></td>
@@ -213,13 +216,13 @@
 
   <tbody>
       <tr *ngFor="let country of countries">
-          <td class="table-dark text-right border-white"><a href="dashboard/{{country.Slug}}" class="text-white">{{ country.Country }}</a></td>
-          <td class="table-warning text-right border-white">{{ country.NewConfirmed | number }}</td>
-          <td class="table-warning text-right border-white">{{ country.TotalConfirmed | number }}</td>
-          <td class="table-primary text-right border-white">{{ country.NewRecovered | number }}</td>
-          <td class="table-primary text-right border-white">{{ country.TotalRecovered | number }}</td>
-          <td class="table-danger text-right border-white">{{ country.NewDeaths | number }}</td>
-          <td class="table-danger text-right border-white">{{ country.TotalDeaths | number }}</td>
+          <td class="table-dark text-right border-white"><a href="dashboard/{{country.Slug}}" class="text-white">{{country.Country}}</a></td>
+          <td class="table-warning text-right border-white">{{country.NewConfirmed | number}}</td>
+          <td class="table-warning text-right border-white">{{country.TotalConfirmed | number}}</td>
+          <td class="table-primary text-right border-white">{{country.NewRecovered | number}}</td>
+          <td class="table-primary text-right border-white">{{country.TotalRecovered | number}}</td>
+          <td class="table-danger text-right border-white">{{country.NewDeaths | number}}</td>
+          <td class="table-danger text-right border-white">{{country.TotalDeaths | number}}</td>
       </tr>
   </tbody>
 </table>
@@ -229,6 +232,8 @@
 <div class="col-xs-1 col-md-2">&nbsp;</div>
 
 </div>
+
+
 
 <!-- ***Footer row***-->
   <div class="row row-m-t">
@@ -242,3 +247,5 @@
            <th class="border-white text-center"><small class="border-white">Data Source: <a href="https://covid19api.com/">COVID-19 API / Johns Hopkins CSSE</a></small></th>
        </thead>
       </table>
+      </div>
+    </div>

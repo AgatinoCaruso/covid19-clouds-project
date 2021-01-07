@@ -19,6 +19,7 @@ import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
 
 import { SortDirective } from './directive/sort.directive';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { SortDirective } from './directive/sort.directive';
     PieChartComponent,
     BarChartComponent,
     LineChartComponent,
-    SortDirective
+    SortDirective,
+    UserComponent
   ],
   imports: [
     BrowserModule,

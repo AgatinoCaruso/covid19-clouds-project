@@ -20,14 +20,16 @@ export class DashboardComponent implements OnInit {
     Slug: string;
     countries: Array<CountryData>;
 
-    constructor(private service: DataService, private actRoute: ActivatedRoute) {
+    constructor(public service: DataService, private actRoute: ActivatedRoute) {
     this.Slug = this.actRoute.snapshot.params.Slug;
     if(this.Slug == null)
       this.Slug = "worldwide";
   }
 
     ngOnInit() {
+            
       this.getAllData();
+         
     }
 
     getAllData() {

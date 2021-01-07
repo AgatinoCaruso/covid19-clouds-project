@@ -7,8 +7,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CountryComponent } from './country/country.component';
 
 const routes: Routes = [
-  { path: "dashboard", component: DashboardComponent},
-  { path: "dashboard/:Slug", component: CountryComponent},
+  { path: "dashboard", component: DashboardComponent },
+  { path: "dashboard/:Slug", component: CountryComponent },
   { path: "**", redirectTo: "dashboard"}
 ];
 
