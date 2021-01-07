@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
+    "-": "^0.0.1",
     "@angular/animations": "~11.0.0",
     "@angular/cdk": "^11.0.0",
     "@angular/common": "~11.0.0",
@@ -32,6 +33,7 @@
     "jquery": "^3.5.1",
     "ng2-charts": "^2.4.2",
     "rxjs": "~6.6.0",
+    "save": "^2.4.0",
     "sorttable": "^1.0.2",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

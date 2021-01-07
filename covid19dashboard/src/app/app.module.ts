@@ -18,6 +18,8 @@ import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
 
+import { SortDirective } from './directive/sort.directive';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +28,8 @@ import { LineChartComponent } from './line-chart/line-chart.component';
     CountryComponent,
     PieChartComponent,
     BarChartComponent,
-    LineChartComponent
+    LineChartComponent,
+    SortDirective
   ],
   imports: [
     BrowserModule,

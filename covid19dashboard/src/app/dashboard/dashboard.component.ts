@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
     //highlyDeathData: Array<CountryData>;
     //highlyRecoveredData: Array<CountryData>;
     Slug: string;
+    countries: Array<CountryData>;
 
     constructor(private service: DataService, private actRoute: ActivatedRoute) {
     this.Slug = this.actRoute.snapshot.params.Slug;
@@ -36,6 +37,7 @@ export class DashboardComponent implements OnInit {
           this.getActiveCases();
           this.getRecoveryRate();
           this.getMortalityRate();
+          this.countries = this.summaryData.Countries;
         }
       )
     }
@@ -62,8 +64,4 @@ export class DashboardComponent implements OnInit {
                             this.summaryData?.Global?.TotalConfirmed * 100;
     }
 
-    // onClick(OrderBy) {
-    //   console.log('Will order for ' + OrderBy);
-    //  //TODO
-    // }
 }

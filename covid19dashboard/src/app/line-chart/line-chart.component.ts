@@ -122,13 +122,13 @@ export class LineChartComponent implements OnInit {
 
       this.lineChartLabels[0] = this.service.getReverseAPIFormatDate(this.AprilThirt);
 
-
-      for (let j = 1; j < this.getDaysFromAprilThirt()-1; j++) {
-        this.lineChartLabels[j] = this.service.getReverseAPIFormatDate(new Date(this.AprilThirt.getFullYear(), this.AprilThirt.getMonth(), this.AprilThirt.getDate() + j));
-        this.lineChartData[0].data[j] = this.dataSinceApril[j].TotalDeaths + this.lineChartData[0].data[j-1];
-        this.lineChartData[1].data[j] = this.dataSinceApril[j].TotalRecovered + this.lineChartData[1].data[j-1];
-        this.lineChartData[2].data[j] = this.dataSinceApril[j].TotalConfirmed + this.lineChartData[2].data[j-1];
-      }
+     //TODO
+      // for (let j = 1; j < this.getDaysFromAprilThirt()-1; j++) {
+      //   this.lineChartLabels[j] = this.service.getReverseAPIFormatDate(new Date(this.AprilThirt.getFullYear(), this.AprilThirt.getMonth(), this.AprilThirt.getDate() + j));
+      //   this.lineChartData[0].data[j] = this.dataSinceApril[j].TotalDeaths + this.lineChartData[0].data[j-1];
+      //   this.lineChartData[1].data[j] = this.dataSinceApril[j].TotalRecovered + this.lineChartData[1].data[j-1];
+      //   this.lineChartData[2].data[j] = this.dataSinceApril[j].TotalConfirmed + this.lineChartData[2].data[j-1];
+      // }
 
     this.chart.update();
   }

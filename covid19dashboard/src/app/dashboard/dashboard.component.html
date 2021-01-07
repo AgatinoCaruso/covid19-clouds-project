@@ -12,7 +12,7 @@
            <th class="border-white"><h5 class="border-white">Worldwide</h5></th>
        </thead>
       </table>
-
+      <ng-container *ngIf="summaryData">
       <!-- Table -->
       <table class="table table-bordered table-center">
         <tbody>
@@ -54,6 +54,7 @@
             </tr>
         </tbody>
       </table>
+      </ng-container>
     </div>
 
    <div class="col-xs-1 col-md-2">&nbsp;</div>
@@ -160,29 +161,69 @@
       </table>
 
 <!-- Table -->
+<ng-container *ngIf="countries">
 <table class="table table-bordered table-center">
 
-  <thead>
-    <th class="border-white table-dark"><p>Country</p><i class="fa fa-fw fa-sort"></i></th>
-    <th class="border-white table-warning"><p>New Cases</p><i class="fa fa-fw fa-sort"></i></th>
-    <th class="border-white table-warning"><p>Total Cases</p><i class="fa fa-fw fa-sort"></i></th>
-    <th class="border-white table-primary"><p>New Recoveries</p><i class="fa fa-fw fa-sort"></i></th>
-    <th class="border-white table-primary"><p>Total Recoveries</p><i class="fa fa-fw fa-sort"></i></th>
-    <th class="border-white table-danger"><p>New Deaths</p><i class="fa fa-fw fa-sort"></i></th>
-    <th class="border-white table-danger"><p>Total Deaths</p><i class="fa fa-fw fa-sort"></i></th>
+  <thead class="text-center">
+  <tr>
+    <th class="table-dark border-white">Country<br>
+      <i class="fa fa-chevron-up" aria-hidden="true"
+      [appSort]="countries" data-order="desc" data-name="Country" scope="col"></i>
+      <i class="fa fa-chevron-down" aria-hidden="true"
+      [appSort]="countries" data-order="asc" data-name="Country" scope="col"></i>
+  </th>
+  <th class="table-warning border-white">New Cases<br>
+      <i class="fa fa-chevron-up" aria-hidden="true"
+      [appSort]="countries" data-order="desc" data-name="NewConfirmed" scope="col"></i>
+      <i class="fa fa-chevron-down" aria-hidden="true"
+      [appSort]="countries" data-order="asc" data-name="NewConfirmed" scope="col"></i>
+  </th>
+  <th class="table-warning border-white">Total Cases<br>
+      <i class="fa fa-chevron-up" aria-hidden="true"
+      [appSort]="countries" data-order="desc" data-name="TotalConfirmed" scope="col"></i>
+      <i class="fa fa-chevron-down" aria-hidden="true"
+      [appSort]="countries" data-order="asc" data-name="TotalConfirmed" scope="col"></i>
+  </th>
+  <th class="table-primary border-white">New Recoveries<br>
+      <i class="fa fa-chevron-up" aria-hidden="true"
+      [appSort]="countries" data-order="desc" data-name="NewRecovered" scope="col"></i>
+      <i class="fa fa-chevron-down" aria-hidden="true"
+      [appSort]="countries" data-order="asc" data-name="NewRecovered" scope="col"></i>
+  </th>
+  <th class="table-primary">Total Recoveries<br>
+      <i class="fa fa-chevron-up" aria-hidden="true"
+      [appSort]="countries" data-order="desc" data-name="TotalRecovered" scope="col"></i>
+      <i class="fa fa-chevron-down" aria-hidden="true"
+      [appSort]="countries" data-order="asc" data-name="TotalRecovered" scope="col"></i>
+  </th>
+  <th class="table-danger border-white">New Deaths<br>
+      <i class="fa fa-chevron-up" aria-hidden="true"
+      [appSort]="countries" data-order="desc" data-name="NewDeaths" scope="col"></i>
+      <i class="fa fa-chevron-down" aria-hidden="true"
+      [appSort]="countries" data-order="asc" data-name="NewDeaths" scope="col"></i>
+  </th>
+  <th class="table-danger border-white">Total Deaths<br>
+      <i class="fa fa-chevron-up" aria-hidden="true"
+      [appSort]="countries" data-order="desc" data-name="TotalDeaths" scope="col"></i>
+      <i class="fa fa-chevron-down" aria-hidden="true"
+      [appSort]="countries" data-order="asc" data-name="TotalDeaths" scope="col"></i>
+  </th>
+  </tr>
   </thead>
+
   <tbody>
-      <tr *ngFor="let country of summaryData?.Countries">
-          <td class="border-white table-dark"><a href="dashboard/{{country.Slug}}" class="text-white">{{country.Country}}</a></td>
-          <td class="border-white table-warning"><p class="text-right">{{country?.NewConfirmed | number}}</p></td>
-          <td class="border-white table-warning"><p class="text-right">{{country?.TotalConfirmed | number}}</p></td>
-          <td class="border-white table-primary"><p class="text-right">{{country?.NewRecovered | number}}</p></td>
-          <td class="border-white table-primary"><p class="text-right">{{country?.TotalRecovered | number}}</p></td>
-          <td class="border-white table-danger"><p class="text-right">{{country?.NewDeaths | number}}</p></td>
-          <td class="border-white table-danger"><p class="text-right">{{country?.TotalDeaths | number}}</p></td>
+      <tr *ngFor="let country of countries">
+          <td class="table-dark text-right border-white"><a href="dashboard/{{country.Slug}}" class="text-white">{{ country.Country }}</a></td>
+          <td class="table-warning text-right border-white">{{ country.NewConfirmed | number }}</td>
+          <td class="table-warning text-right border-white">{{ country.TotalConfirmed | number }}</td>
+          <td class="table-primary text-right border-white">{{ country.NewRecovered | number }}</td>
+          <td class="table-primary text-right border-white">{{ country.TotalRecovered | number }}</td>
+          <td class="table-danger text-right border-white">{{ country.NewDeaths | number }}</td>
+          <td class="table-danger text-right border-white">{{ country.TotalDeaths | number }}</td>
       </tr>
   </tbody>
 </table>
+</ng-container>
 </div>
 
 <div class="col-xs-1 col-md-2">&nbsp;</div>
