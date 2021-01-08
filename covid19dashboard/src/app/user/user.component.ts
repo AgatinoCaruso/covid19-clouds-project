@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
+import { DatabaseService } from '../database.service';
 import { User } from '../user.model';
 
 @Component({
@@ -11,12 +12,12 @@ export class UserComponent implements OnInit {
   loggedUser: User;
   userLoggedIn: Boolean;
 
-  constructor(public service: DataService) { }
+  constructor(private dataService: DataService, public databaseService: DatabaseService) { }
 
   ngOnInit(): void {
     this.userLoggedIn = false;  
    
-    this.loggedUser = this.service.getLoggedUser();
+    this.loggedUser = this.databaseService.getLoggedUser();
    
     this.userLoggedIn = this.isUserLoggedIn();
   }
@@ -34,13 +35,13 @@ export class UserComponent implements OnInit {
   }
 
   async signInWithGoogle() {
-    this.setUserIsLoggedIn(await this.service.signInWithGoogle());
-    this.loggedUser = this.service.getLoggedUser();
+    this.setUserIsLoggedIn(await this.databaseService.signInWithGoogle());
+    this.loggedUser = this.databaseService.getLoggedUser();
    }
 
    async signOut() {
-     this.setUserIsLoggedIn(await this.service.signOut());
-     this.loggedUser = this.service.getLoggedUser();
+     this.setUserIsLoggedIn(await this.databaseService.signOut());
+     this.loggedUser = this.databaseService.getLoggedUser();
    }
 
 }

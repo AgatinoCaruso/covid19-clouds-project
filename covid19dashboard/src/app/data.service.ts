@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import firebase from 'firebase/app'
-import { AngularFireAuth } from '@angular/fire/auth'
-import { AngularFirestore} from '@angular/fire/firestore'
-import { User } from './user.model'
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,70 +9,65 @@ import { User } from './user.model'
 export class DataService {
 
   private url: string = "https://api.covid19api.com/summary";
-  private urlDates: string;
-  private urlApril: string;
   private today: any;
   private lastWeek: any;
-  private urlCountryFromFirstCase: string;
-  private user: User;
 
-  constructor(private http: HttpClient, private afAuth: AngularFireAuth, 
-              private firestore: AngularFirestore) {}
+  constructor(private http: HttpClient) {}
 
+  /*** Data retrieval functionalities ***/
 
-  public async signInWithGoogle(): Promise<Boolean>{
-    const credentials = await this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-    
-    this.user = {
-     uid: credentials.user.uid,
-     displayName: credentials.user.displayName,
-     email: credentials.user.email
-    };
-
-    localStorage.setItem("user", JSON.stringify(this.user));
-    this.updateUserData();
-    return true;
+  // Get all summary data
+  getSummaryData(): Observable<any> {
+    console.log("Data Service - getSummaryData(): " + this.url);
+  
+    return this.http.get(this.url)
+      .pipe((response) => response);
   }
 
-  // if user login again we just update the data
-  private updateUserData() {
-    this.firestore.collection("users").doc(this.user.uid).set({
-      uid: this.user.uid,
-      displayName: this.user.displayName,
-      email: this.user.email
-    }, { merge: true})
-  }
+  getWeeklyData(Slug): Observable<any> {
+    //https://api.covid19api.com/country/south-africa/status/confirmed?from=2020-03-01T00:00:00Z&to=2020-04-01T00:00:00Z
+    this.setCurrentDates(); 
 
-  public getAPIFormatDate(date: Date) {
-
-    var dd = String(date.getDate()).padStart(2, '0');
-    var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = date.getFullYear();
-    var result = yyyy + '-' + mm + '-' + dd;
-
-    return result;
-  }
-
-  public getLoggedUser() {
-    if(this.user == null && this.userSignedIn()) {
-      this.user = JSON.parse(localStorage.getItem("user"));
+    // Requested by country component
+    if(Slug) {
+      var urlDates = "https://api.covid19api.com/live/country/" + Slug + "/status/confirmed/date/" + this.lastWeek + "T00:00:00Z";
+      console.log("Data Service - getWeeklyData country: " + urlDates);
+      return this.http.get(urlDates)
+        .pipe((response) => response);
     }
-
-    return this.user;
+     // Requested by dashboard component
+    else {
+      var urlDates = "https://api.covid19api.com/world?from=" + this.lastWeek +"T00:00:00Z&to=" + this.today + "T00:00:00Z";
+      console.log("Data Service - getWeeklyData world: " + urlDates);
+      return this.http.get(urlDates)
+        .pipe((response) => response);
+   }
   }
 
-  public userSignedIn() : boolean {
-    return JSON.parse(localStorage.getItem("user")) != null;
+  // Used by country component
+  getDataCountryFromFirstCase(Slug): Observable<any> {
+
+    var urlCountryFromFirstCase ="https://api.covid19api.com/dayone/country/" + Slug;
+
+    console.log("Data Service - getDataCountryFromFirstCase: " + urlCountryFromFirstCase);
+   
+    return this.http.get(urlCountryFromFirstCase)
+      .pipe((response) => response);
   }
 
-  public signOut(): Boolean {
-    this.afAuth.signOut();
-    localStorage.removeItem("user");
-    this.user = null;
-    //TODO hide button
-    return false;
+  // Get World Data from 13th of April to today
+  getDataApril(): Observable<any> {
+
+    this.setCurrentDates();
+    var urlApril ="https://api.covid19api.com/world?from=2020-04-13T00:00:00Z&to=" + this.today + "T00:00:00Z";
+
+    console.log("Data Service - getDataApril: " + urlApril);
+   
+    return this.http.get(urlApril)
+      .pipe((response) => response);
   }
 
+  /*** Date functionalities ***/
   public getReverseAPIFormatDate(date: Date) {
 
     var dd = String(date.getDate()).padStart(2, '0');
@@ -94,74 +86,22 @@ export class DataService {
     return new Date(parseInt(yyyy), parseInt(mm)-1, parseInt(dd));
   }
 
+  public getAPIFormatDate(date: Date) {
+
+    var dd = String(date.getDate()).padStart(2, '0');
+    var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = date.getFullYear();
+    var result = yyyy + '-' + mm + '-' + dd;
+
+    return result;
+  }
+  
   private setCurrentDates() {
     this.today = new Date();
     this.lastWeek = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() - 7);
 
     this.today = this.getAPIFormatDate(this.today);
     this.lastWeek = this.getAPIFormatDate(this.lastWeek);
-  }
-
-  getData(): Observable<any> {
-
-    return this.http.get(this.url)
-      .pipe((response) => response);
-  }
-
-  getDataParam(Slug): Observable<any> {
-
-//    console.log(Slug);
-
-    if(Slug) { // country page
-      return this.http.get(this.url)
-        .pipe((response) => response);
-    }
-    else { // dashboard
-      return this.http.get(this.url)
-        .pipe((response) => response);
-    }
-  }
-
-  getWeeklyData(Slug): Observable<any> {
-
-//  console.log("Service - getWeeklyData, Slug: " + Slug);
-    this.setCurrentDates();
-  //  https://api.covid19api.com/country/south-africa/status/confirmed?from=2020-03-01T00:00:00Z&to=2020-04-01T00:00:00Z
-
-
-    if(Slug) { // country page
-        this.urlDates = "https://api.covid19api.com/live/country/"+Slug+"/status/confirmed/date/" + this.lastWeek + "T00:00:00Z";
-      //  https://api.covid19api.com/live/country/south-africa/status/confirmed/date/2020-03-21T13:13:30Z
-      console.log("Service - getWeeklyData, urlDates: " + this.urlDates);
-      return this.http.get(this.urlDates)
-        .pipe((response) => response);
-    }
-   else {
-      this.urlDates = "https://api.covid19api.com/world?from=" + this.lastWeek +"T00:00:00Z&to=" + this.today + "T00:00:00Z";
-  //      console.log("Service - getWeeklyData, urlDates: " + this.urlDates);
-      return this.http.get(this.urlDates)
-        .pipe((response) => response);
-
-   }
-
-  }
-
-  getDataCountryFromFirstCase(Slug): Observable<any> {
-
-
-    this.urlCountryFromFirstCase ="https://api.covid19api.com/dayone/country/" + Slug;
-
-    return this.http.get(this.urlCountryFromFirstCase)
-      .pipe((response) => response);
-  }
-
-  getDataApril(): Observable<any> {
-
-    this.setCurrentDates();
-    this.urlApril ="https://api.covid19api.com/world?from=2020-04-13T00:00:00Z&to=" + this.today + "T00:00:00Z";
-
-    return this.http.get(this.urlApril)
-      .pipe((response) => response);
   }
 
 }

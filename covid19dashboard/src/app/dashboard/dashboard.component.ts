@@ -9,61 +9,60 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-    title = 'covid19dashboard';
     summaryData: SummaryData;
     activeCases: number;
     recoveryRate: number;
     mortalityRate: number;
-    //highlyConfirmedData: Array<CountryData>;
-    //highlyDeathData: Array<CountryData>;
-    //highlyRecoveredData: Array<CountryData>;
     Slug: string;
     countries: Array<CountryData>;
 
-    constructor(public service: DataService, private actRoute: ActivatedRoute) {
-    this.Slug = this.actRoute.snapshot.params.Slug;
-    if(this.Slug == null)
-      this.Slug = "worldwide";
+    constructor(public dataService: DataService, private actRoute: ActivatedRoute) {
+      this.Slug = this.actRoute.snapshot.params.Slug;
+
+      if(this.Slug == null)
+        this.Slug = "worldwide";
   }
 
     ngOnInit() {
-            
-      this.getAllData();
+      this.getSummaryData();
          
     }
 
-    getAllData() {
-      this.service.getData().subscribe(
-        response => {
-          this.summaryData = response;
-          this.getActiveCases();
-          this.getRecoveryRate();
-          this.getMortalityRate();
-          this.countries = this.summaryData.Countries;
-        }
-      )
+    getSummaryData() {
+      const promise = new Promise((resolve, reject) => {
+          this.dataService.getSummaryData().subscribe(
+          response => {
+            this.summaryData = response;
+            this.getActiveCases();
+            this.getRecoveryRate();
+            this.getMortalityRate();
+            this.countries = this.summaryData.Countries;
+          }
+       )
+      })
+      return promise;
     }
 
     getActiveCases() {
-      this.activeCases = ((this.summaryData?.Global?.TotalConfirmed)
-                         -(this.summaryData?.Global?.TotalRecovered)
-                         -(this.summaryData?.Global?.TotalDeaths));
+      this.activeCases = ((this.summaryData.Global.TotalConfirmed)
+                         -(this.summaryData.Global.TotalRecovered)
+                         -(this.summaryData.Global.TotalDeaths));
     }
 
     getRecoveryRate() {
       this.recoveryRate =
 
-                             this.summaryData?.Global?.TotalRecovered
+                             this.summaryData.Global.TotalRecovered
                                                 /
-                            this.summaryData?.Global?.TotalConfirmed * 100;
+                            this.summaryData.Global.TotalConfirmed * 100;
     }
 
     getMortalityRate() {
       this.mortalityRate =
 
-                             this.summaryData?.Global?.TotalDeaths
+                             this.summaryData.Global.TotalDeaths
                                                 /
-                            this.summaryData?.Global?.TotalConfirmed * 100;
+                            this.summaryData.Global.TotalConfirmed * 100;
     }
 
 }

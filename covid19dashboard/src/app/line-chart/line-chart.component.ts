@@ -3,7 +3,7 @@ import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { DataService } from '../data.service';
-import { WeeklyData, CountryAllDataFromZero } from '../models';
+import { GlobalData, CountryDataFromZero } from '../models';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -13,11 +13,11 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class LineChartComponent implements OnInit {
 
-  dataSinceApril: WeeklyData;
+  dataSinceApril: Array<GlobalData>;
   today: Date;
   AprilThirt: Date;
   Slug: string;
-  countryAllDataFromZero: CountryAllDataFromZero;
+  countryAllDataFromZero: Array<CountryDataFromZero>;
   //   { data: [], pointRadius: 0, label: 'Total Deaths' },
   // pointRadius=0 removes dots on data
   public lineChartData: ChartDataSets[] = [
@@ -47,7 +47,7 @@ export class LineChartComponent implements OnInit {
 
   @ViewChild(BaseChartDirective, { static: true }) chart: BaseChartDirective;
 
-  constructor(private service: DataService, private actRoute: ActivatedRoute) {
+  constructor(private dataService: DataService, private actRoute: ActivatedRoute) {
     this.Slug = this.actRoute.snapshot.params.Slug;
   }
 
@@ -60,75 +60,76 @@ export class LineChartComponent implements OnInit {
   public getDataFromDate() {
     this.actRoute.params.subscribe(params => {
       if(params['Slug']) { //in a country
-        this.service.getDataCountryFromFirstCase(params['Slug']).subscribe(
+        this.dataService.getDataCountryFromFirstCase(params['Slug']).subscribe(
           response => {
             this.countryAllDataFromZero = response;
-            console.log(this.countryAllDataFromZero);
+            //console.log(this.countryAllDataFromZero);
             this.setCurrentDates();
             this.setDataCountry();
-       console.log("getDataCountryFromFirstCase, country, Slug: " + this.Slug);
+      // console.log("getDataCountryFromFirstCase, country, Slug: " + this.Slug);
           }
           )
         }
 
         else {
-          this.service.getDataApril().subscribe(
+          this.dataService.getDataApril().subscribe(
             response => {
               this.dataSinceApril = response;
-              console.log(this.dataSinceApril);
+             // console.log("Line chart - get data dashboard: " + this.dataSinceApril);
               this.setCurrentDates();
               this.setData();
-          console.log("getDataApril, dashboard, Slug: " + this.Slug);
+          //console.log("getDataApril, dashboard, Slug: " + this.Slug);
             }
           )
         }
       })
   }
 
+  
   public setDataCountry() {
-
-      // set first values
-      // this.lineChartData[0].data[0] = this.countryAllDataFromZero[0].Deaths;
-      // this.lineChartData[1].data[0] = this.countryAllDataFromZero[0].Recovered;
-      // this.lineChartData[2].data[0] = this.countryAllDataFromZero[0].Confirmed;
-
-
-    var firstCaseDate = this.countryAllDataFromZero[0].Date;
-
-    firstCaseDate = this.service.getDateFromAPIDate(firstCaseDate);
-
+    
+    var firstCaseString = this.countryAllDataFromZero[0].Date;
+    var firstCaseDate = this.dataService.getDateFromAPIDate(firstCaseString);
     var daysFromTheFirstCase = this.getDaysFromDate(firstCaseDate);
+    this.lineChartLabels[0] = this.dataService.getReverseAPIFormatDate(firstCaseDate);
 
-    this.lineChartLabels[0] = this.service.getReverseAPIFormatDate(firstCaseDate);
 
+    for (let j = 0; j < daysFromTheFirstCase-1; j++) {
+      this.lineChartLabels[j] = this.dataService.getReverseAPIFormatDate(
+        new Date(firstCaseDate.getFullYear(), firstCaseDate.getMonth(), firstCaseDate.getDate() + j));
 
-      for (let j = 1; j < daysFromTheFirstCase-1; j++) {
-        this.lineChartLabels[j] = this.service.getReverseAPIFormatDate(new Date(firstCaseDate.getFullYear(), firstCaseDate.getMonth(), firstCaseDate.getDate() + j));
-
-        // this.lineChartData[0].data[j] = this.countryAllDataFromZero[j].Deaths;// + this.lineChartData[0].data[j-1];
-        // this.lineChartData[1].data[j] = this.countryAllDataFromZero[j].Recovered;// + this.lineChartData[1].data[j-1];
-        // this.lineChartData[2].data[j] = this.countryAllDataFromZero[j].Confirmed;// + this.lineChartData[2].data[j-1];
-      }
-
+        if(this.countryAllDataFromZero[j].Province == "") { //ignore provinces and overseas territories
+            this.lineChartData[0].data[j] = this.countryAllDataFromZero[j].Deaths;
+            this.lineChartData[1].data[j] = this.countryAllDataFromZero[j].Recovered;
+            this.lineChartData[2].data[j] = this.countryAllDataFromZero[j].Confirmed;
+        }
+    }
     this.chart.update();
   }
 
   public setData() {
 
-      // set first value to zero
-      // this.lineChartData[0].data[0] = this.dataSinceApril[0].TotalDeaths;
-      // this.lineChartData[1].data[0] = this.dataSinceApril[0].TotalRecovered;
-      // this.lineChartData[2].data[0] = this.dataSinceApril[0].TotalConfirmed;
+    let TotalConfirmed = [];
+    let TotalRecovered = [];
+    let TotalDeaths = [];
+    this.dataSinceApril.forEach(element => {
+      TotalConfirmed.push(element.TotalConfirmed);
+      TotalRecovered.push(element.TotalRecovered);
+      TotalDeaths.push(element.TotalDeaths);
+    });
+     TotalConfirmed = TotalConfirmed.sort((a, b) => a - b)
+     TotalRecovered = TotalRecovered.sort((a, b) => a - b)
+     TotalDeaths = TotalDeaths.sort((a, b) => a - b)
 
-      this.lineChartLabels[0] = this.service.getReverseAPIFormatDate(this.AprilThirt);
+    this.lineChartLabels[0] = this.dataService.getReverseAPIFormatDate(this.AprilThirt);
 
-     //TODO
-      // for (let j = 1; j < this.getDaysFromAprilThirt()-1; j++) {
-      //   this.lineChartLabels[j] = this.service.getReverseAPIFormatDate(new Date(this.AprilThirt.getFullYear(), this.AprilThirt.getMonth(), this.AprilThirt.getDate() + j));
-      //   this.lineChartData[0].data[j] = this.dataSinceApril[j].TotalDeaths + this.lineChartData[0].data[j-1];
-      //   this.lineChartData[1].data[j] = this.dataSinceApril[j].TotalRecovered + this.lineChartData[1].data[j-1];
-      //   this.lineChartData[2].data[j] = this.dataSinceApril[j].TotalConfirmed + this.lineChartData[2].data[j-1];
-      // }
+    
+    for (let j = 0; j < this.getDaysFromAprilThirt()-1; j++) {
+      this.lineChartLabels[j] = this.dataService.getReverseAPIFormatDate(new Date(this.AprilThirt.getFullYear(), this.AprilThirt.getMonth(), this.AprilThirt.getDate() + j));
+      this.lineChartData[0].data[j] = TotalDeaths[j];
+      this.lineChartData[1].data[j] = TotalRecovered[j];
+      this.lineChartData[2].data[j] = TotalConfirmed[j];
+    }
 
     this.chart.update();
   }

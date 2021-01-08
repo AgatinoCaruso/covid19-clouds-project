@@ -8,6 +8,7 @@
    <!-- Here center column -->
    <div class="col-xs-10 col-md-8">
 
+  <ng-container *ngIf="countryData">
      <!-- Title of the table-->
      <table class="table table-bordered">
        <thead class="thead-light">
@@ -20,11 +21,11 @@
         <tbody>
             <tr class="table-warning">
                 <td class="border-white"><p class="text-left text-middle">Total Cases</p></td>
-                <td class="border-white"><p class="text-right">{{countryData?.TotalConfirmed | number}}</p></td>
+                <td class="border-white"><p class="text-right">{{countryData.TotalConfirmed | number}}</p></td>
             </tr>
             <tr class="table-warning">
                 <td class="border-white"><p class="text-left">New Cases</p></td>
-                <td class="border-white"><p class="text-right">{{countryData?.NewConfirmed | number}}</p></td>
+                <td class="border-white"><p class="text-right">{{countryData.NewConfirmed | number}}</p></td>
             </tr>
             <tr class="table-warning">
                 <td class="border-white"><p class="text-left">Active Cases</p></td>
@@ -32,11 +33,11 @@
             </tr>
             <tr class="table-info">
                 <td class="border-white"><p class="text-left">Total Recovered</p></td>
-                <td class="border-white"><p class="text-right">{{countryData?.TotalRecovered | number}}</p></td>
+                <td class="border-white"><p class="text-right">{{countryData.TotalRecovered | number}}</p></td>
             </tr>
             <tr class="table-info">
                 <td class="border-white"><p class="text-left">New Recovered</p></td>
-                <td class="border-white"><p class="text-right">{{countryData?.NewRecovered | number}}</p></td>
+                <td class="border-white"><p class="text-right">{{countryData.NewRecovered | number}}</p></td>
             </tr>
             <tr class="table-info">
                 <td class="border-white"><p class="text-left">Recovery Rate</p></td>
@@ -44,18 +45,19 @@
             </tr>
             <tr class="table-danger">
                 <td class="border-white"><p class="text-left">Total Deaths</p></td>
-                <td class="border-white"><p class="text-right">{{countryData?.TotalDeaths | number}}</p></td>
+                <td class="border-white"><p class="text-right">{{countryData.TotalDeaths | number}}</p></td>
             </tr>
             <tr class="table-danger">
                 <td class="border-white"><p class="text-left">New Deaths</p></td>
-                <td class="border-white"><p class="text-right">{{countryData?.NewDeaths | number}}</p></td>
+                <td class="border-white"><p class="text-right">{{countryData.NewDeaths | number}}</p></td>
             </tr>
             <tr class="table-danger">
                 <td class="border-white"><p class="text-left">Mortality Rate</p></td>
                 <td class="border-white"><p class="text-right">{{mortalityRate | number}}%</p></td>
             </tr>
-        </tbody>
-      </table>
+          </tbody>
+       </table>
+      </ng-container>
     </div>
 
     <div class="col-xs-1 col-md-2">&nbsp;</div>
@@ -77,7 +79,9 @@
      <!-- Title of the table-->
      <table class="table table-bordered">
        <thead class="thead-light">
+        <ng-container *ngIf="countryData">
            <th class="border-white"><h5 class="border-white">Corona Virus Cases Distribution {{countryData.Country}}</h5></th>
+        </ng-container>
        </thead>
       </table>
 
@@ -104,7 +108,9 @@
      <!-- Title of the table-->
      <table class="table table-bordered">
        <thead class="thead-light">
+        <ng-container *ngIf="countryData">
            <th class="border-white"><h5 class="border-white">Daily Corona Virus Cases {{countryData.Country}}</h5></th>
+        </ng-container>
        </thead>
       </table>
 
@@ -131,7 +137,9 @@
      <!-- Title of the table-->
      <table class="table table-bordered">
        <thead class="thead-light">
+        <ng-container *ngIf="countryData">
            <th class="border-white"><h5 class="border-white">Total Corona Virus Cases {{countryData.Country}}</h5></th>
+        </ng-container>
        </thead>
       </table>
 

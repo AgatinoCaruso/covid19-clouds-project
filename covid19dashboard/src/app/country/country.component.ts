@@ -17,7 +17,7 @@ export class CountryComponent implements OnInit {
     recoveryRate: number;
     mortalityRate: number;
 
-    constructor(private service: DataService, private actRoute: ActivatedRoute) {
+    constructor(private dataService: DataService, private actRoute: ActivatedRoute) {
     this.Slug = this.actRoute.snapshot.params.Slug;
   }
 
@@ -28,7 +28,7 @@ export class CountryComponent implements OnInit {
     getAllData() {
       this.actRoute.params.subscribe(params => {
         if(params['Slug']) {
-      this.service.getDataParam(params['Slug']).subscribe(
+      this.dataService.getSummaryData().subscribe(
         response => {
           this.summaryData = response;
           this.getCountryData();

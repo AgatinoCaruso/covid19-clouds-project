@@ -18,6 +18,7 @@ export class PieChartComponent implements OnInit {
   activeCases: number;
   Slug: string;
   countryData: CountryData;
+  
 
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
@@ -27,7 +28,7 @@ export class PieChartComponent implements OnInit {
     legend: {
       position: 'top',
     },
-    // removes labels on data
+    // Removes labels on data
     plugins: {
       datalabels: {
           display: false,
@@ -45,13 +46,14 @@ export class PieChartComponent implements OnInit {
     },
   ];
 
-  constructor(private service: DataService, private actRoute: ActivatedRoute) {
+  constructor(private dataService: DataService, private actRoute: ActivatedRoute) {
     this.Slug = this.actRoute.snapshot.params.Slug;
   }
 
   ngOnInit(): void {
-    this.getAllData();
-    setTimeout(() => { //to update the graph
+    this.getSummaryData();
+    // To update the graph
+    setTimeout(() => { 
       this.thisSetDataOnChart();
 
      this.chart.chart.update()
@@ -62,23 +64,24 @@ export class PieChartComponent implements OnInit {
     this.countryData = this.summaryData.Countries.find(x => x.Slug == this.Slug);
   }
 
-  getAllData() {
-    this.service.getData().subscribe(
-      response => {
-        if(this.Slug) { //in a country
-          //  console.log("getAllData country, Slug: " + this.Slug);
-            this.summaryData = response;
-            this.getCountryData();
-            this.getActiveCasesCountry();
+  getSummaryData() {
+    const promise = new Promise((resolve, reject) =>  {
+      this.dataService.getSummaryData().subscribe( response => {
+        this.summaryData = response;
+        // In Country component  
+        if(this.Slug) {        
+          this.getCountryData();
+          this.getActiveCasesCountry();
         }
-        else { // in dashboard
-        //  console.log("getAllData dashboard, Slug: " + this.Slug);
-          this.summaryData = response;
+        // In Dashboard component  
+        else { 
           this.getActiveCasesGlobally();
         }
-      }
-    )
+      })
+    })
+    return promise;
   }
+
   thisSetDataOnChart() {
     if(this.Slug) { // in a country
       this.chart.chart.data.datasets[0].data =
@@ -95,14 +98,14 @@ export class PieChartComponent implements OnInit {
   }
   
   getActiveCasesCountry() {
-    this.activeCases = ((this.countryData?.TotalConfirmed)
-                       -(this.countryData?.TotalRecovered)
-                       -(this.countryData?.TotalDeaths));
+    this.activeCases = ((this.countryData.TotalConfirmed)
+                       -(this.countryData.TotalRecovered)
+                       -(this.countryData.TotalDeaths));
   }
 
   getActiveCasesGlobally() {
-    this.activeCases = ((this.summaryData?.Global?.TotalConfirmed)
-                       -(this.summaryData?.Global?.TotalRecovered)
-                       -(this.summaryData?.Global?.TotalDeaths));
+    this.activeCases = ((this.summaryData.Global.TotalConfirmed)
+                       -(this.summaryData.Global.TotalRecovered)
+                       -(this.summaryData.Global.TotalDeaths));
   }
 }

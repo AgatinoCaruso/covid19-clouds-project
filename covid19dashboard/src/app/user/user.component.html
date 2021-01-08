@@ -1,19 +1,19 @@
 <div class="row row-m-t">
     <div class="col-xs-7 col-md-7"></div>
     
-    <div class="col-xs-3 col-md-3">
+    <div class="col-xs-3 col-md-3 text-center">
        <div *ngIf="userLoggedIn then logged_in_content else not_logged_in_content"></div>
       
        <ng-template #not_logged_in_content>
-            <button class="btn btn-dark text-center align-right" (click)="signInWithGoogle()">
+            <button class="btn btn-dark text-center float-right" (click)="signInWithGoogle()">
                 <img src="https://firebasestorage.googleapis.com/v0/b/covid19-dashboard-295118.appspot.com/o/google.png?alt=media&token=dbf3f560-0571-4955-aa59-39f8b29ad9f9" style="max-width: 10%" class="float-left">
             Sign in with Google
             </button>
         </ng-template>
         
         <ng-template #logged_in_content>
-            <h8 class="align-right">Welcome {{loggedUser.displayName}}!</h8>&nbsp;&nbsp;&nbsp;
-            <button class="btn btn-danger text-center align-right" (click)="signOut()">
+            <h8 class="float-center">Signed in as {{loggedUser.displayName}}</h8>&nbsp;&nbsp;&nbsp;
+            <button class="btn btn-danger text-center float-right" (click)="signOut()">
                 Sign Out
             </button>
          </ng-template>
