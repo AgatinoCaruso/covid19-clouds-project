@@ -216,7 +216,7 @@
 
   <tbody>
       <tr *ngFor="let country of countries">
-          <td class="table-dark text-right border-white"><a href="dashboard/{{country.Slug}}" class="text-white">{{country.Country}}</a></td>
+          <td class="table-dark text-center border-white"><a href="dashboard/{{country.Slug}}" class="text-white">{{country.Country}}</a></td>
           <td class="table-warning text-right border-white">{{country.NewConfirmed | number}}</td>
           <td class="table-warning text-right border-white">{{country.TotalConfirmed | number}}</td>
           <td class="table-primary text-right border-white">{{country.NewRecovered | number}}</td>

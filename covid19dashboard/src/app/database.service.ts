@@ -9,7 +9,8 @@ import { AngularFirestore} from '@angular/fire/firestore'
 })
 export class DatabaseService {
 
-  private user: User;
+  public user: User;
+  private adminCheck: any;
 
   constructor(private afAuth: AngularFireAuth, private firestore: AngularFirestore) { }
 
@@ -19,20 +20,44 @@ export class DatabaseService {
     this.user = {
      uid: credentials.user.uid,
      displayName: credentials.user.displayName,
-     email: credentials.user.email
+     email: credentials.user.email,
+     admin: false
     };
 
-    localStorage.setItem("user", JSON.stringify(this.user));
-    this.updateUserData();
+    this.checkAdmin(this.user);
     return true;
   }
 
+  async checkAdmin(user: User) {
+    
+    const result = await this.getAdmin(this.user).toPromise().then( async(res: any) => {
+      let tmp = res;
+      console.log("getAdmin - email: " + tmp.get("email"));
+      if (tmp.get("email") == this.user.email) {
+        this.user.admin = true;
+        console.log("getAdmin - admin true: " + this.user.admin);
+     //   localStorage.setItem("admin", "true");
+      } else {
+        this.user.admin = false;
+        console.log("getAdmin - admin false: " + this.user.admin);
+     //   localStorage.setItem("admin", "false");
+      }
+    })
+
+    localStorage.setItem("user", JSON.stringify(this.user));
+    this.updateUserData();
+    return result;
+}
+  getAdmin(user: User) {
+    return this.firestore.collection("admins").doc(user.uid).get();
+  }
   // if user login again we just update the data
   private updateUserData() {
     this.firestore.collection("users").doc(this.user.uid).set({
       uid: this.user.uid,
       displayName: this.user.displayName,
-      email: this.user.email
+      email: this.user.email,
+      admin: this.user.admin
     }, { merge: true})
   }
 

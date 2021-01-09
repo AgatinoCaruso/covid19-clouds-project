@@ -36,14 +36,22 @@ export class CountryDataFromZero {
 }
 
 export class News {
-    User: User
-    Country: string
-    Date: string
-    Description: string
+    uid: string;
+    displayName: string;
+    CountryData: CountryData;
+    Date: string;
+    Description: string;
 }
 
 export interface User {
     uid: string;
     displayName: string;
     email: string;
+    admin: boolean;
+}
+
+export interface Admin {
+    email: string;
+    admin: boolean;
+    uid: string;
 }

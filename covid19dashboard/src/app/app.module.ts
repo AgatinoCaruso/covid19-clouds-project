@@ -22,6 +22,8 @@ import { SortDirective } from './directive/sort.directive';
 import { UserComponent } from './user/user.component';
 import { NewsComponent } from './news/news.component';
 
+import { FormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +43,8 @@ import { NewsComponent } from './news/news.component';
     HttpClientModule,
     ChartsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
