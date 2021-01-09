@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from './user.model'
+import { User, News, CountryData } from './models'
 import firebase from 'firebase/app'
 import { AngularFireAuth } from '@angular/fire/auth'
 import { AngularFirestore} from '@angular/fire/firestore'
@@ -52,8 +52,36 @@ export class DatabaseService {
     this.afAuth.signOut();
     localStorage.removeItem("user");
     this.user = null;
-    //TODO hide button
     return false;
+  }
+
+  async updateCountry(country: CountryData) {
+    this.firestore.collection("Countries").doc(country.Slug).set({
+      Slug: country.Slug,
+      Country: country.Country,
+      CountryCode: country.CountryCode,
+      TotalConfirmed: country.TotalConfirmed,
+      TotalDeaths: country.TotalDeaths,
+      TotalRecovered: country.TotalRecovered,
+      Date: country.Date,
+      NewConfirmed: country.NewConfirmed,
+      NewDeaths: country.NewDeaths,
+      NewRecovered: country.NewRecovered
+    }, { merge: true });
+  }
+
+  getCountry(slug: string) {
+    return this.firestore.collection("Countries").doc(slug).valueChanges();
+  }
+
+  getNews(Slug: string) {
+    return this.firestore.collection("Countries")
+    .doc(Slug).collection("News").valueChanges();
+  }
+
+  addNews(Slug: string, news: News) {
+    this.firestore.collection("Countries")
+    .doc(Slug).collection("News").add(news);
   }
 
 }

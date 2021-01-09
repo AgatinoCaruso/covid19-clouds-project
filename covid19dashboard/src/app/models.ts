@@ -20,10 +20,6 @@ export class CountryData extends GlobalData {
     Slug: string
 }
 
-// export class WeeklyData {
-//      WeekData: Array<GlobalData>
-// }
-
 export class CountryDataFromZero {
      Active: number;
      City: string;
@@ -39,6 +35,15 @@ export class CountryDataFromZero {
     ​​​ Recovered: number;
 }
 
-// export class CountryAllDataFromZero {
-//      SingleCountryDataFromZero: Array<CountryDataFromZero>
-// }
+export class News {
+    User: User
+    Country: string
+    Date: string
+    Description: string
+}
+
+export interface User {
+    uid: string;
+    displayName: string;
+    email: string;
+}

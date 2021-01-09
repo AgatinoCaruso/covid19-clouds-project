@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
-import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { DataService } from '../data.service';
 import { GlobalData, CountryDataFromZero } from '../models';
 import { ActivatedRoute } from '@angular/router';
@@ -94,14 +93,18 @@ export class LineChartComponent implements OnInit {
     this.lineChartLabels[0] = this.dataService.getReverseAPIFormatDate(firstCaseDate);
 
 
-    for (let j = 0; j < daysFromTheFirstCase-1; j++) {
-      this.lineChartLabels[j] = this.dataService.getReverseAPIFormatDate(
-        new Date(firstCaseDate.getFullYear(), firstCaseDate.getMonth(), firstCaseDate.getDate() + j));
+    var i=0;
+    for (let j = 0; j < this.countryAllDataFromZero.length-1;j++) {
 
+     
         if(this.countryAllDataFromZero[j].Province == "") { //ignore provinces and overseas territories
-            this.lineChartData[0].data[j] = this.countryAllDataFromZero[j].Deaths;
-            this.lineChartData[1].data[j] = this.countryAllDataFromZero[j].Recovered;
-            this.lineChartData[2].data[j] = this.countryAllDataFromZero[j].Confirmed;
+          this.lineChartLabels[i] = this.dataService.getReverseAPIFormatDate(
+            new Date(firstCaseDate.getFullYear(), firstCaseDate.getMonth(), firstCaseDate.getDate() + i));
+    
+            this.lineChartData[0].data[i] = this.countryAllDataFromZero[j].Deaths;
+            this.lineChartData[1].data[i] = this.countryAllDataFromZero[j].Recovered;
+            this.lineChartData[2].data[i] = this.countryAllDataFromZero[j].Confirmed;
+            i++;
         }
     }
     this.chart.update();

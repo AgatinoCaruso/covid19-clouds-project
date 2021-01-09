@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { BaseChartDirective } from 'ng2-charts';
+import { BaseChartDirective, SingleDataSet } from 'ng2-charts';
 import { ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { DataService } from '../data.service';
@@ -36,7 +36,7 @@ export class PieChartComponent implements OnInit {
     },
   };
   public pieChartLabels: Label[] = ['Dead Cases', 'Recovered Cases', 'Active Cases'];
-  public pieChartData: number[] = [33, 33, 33];
+  public pieChartData: SingleDataSet;
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
   public pieChartPlugins = [pluginDataLabels];
@@ -50,47 +50,44 @@ export class PieChartComponent implements OnInit {
     this.Slug = this.actRoute.snapshot.params.Slug;
   }
 
-  ngOnInit(): void {
-    this.getSummaryData();
-    // To update the graph
-    setTimeout(() => { 
-      this.thisSetDataOnChart();
-
-     this.chart.chart.update()
-    }, 2000);
+  async ngOnInit(): Promise<void> {
+    await this.getSummaryData();   
   }
 
   getCountryData() {
     this.countryData = this.summaryData.Countries.find(x => x.Slug == this.Slug);
   }
 
-  getSummaryData() {
+  async getSummaryData() {
     const promise = new Promise((resolve, reject) =>  {
-      this.dataService.getSummaryData().subscribe( response => {
+      this.dataService.getSummaryData().toPromise().then( 
+        (response:any) => {
         this.summaryData = response;
         // In Country component  
         if(this.Slug) {        
           this.getCountryData();
           this.getActiveCasesCountry();
+          this.setDataOnChart();
         }
         // In Dashboard component  
         else { 
           this.getActiveCasesGlobally();
+          this.setDataOnChart();
         }
       })
     })
     return promise;
   }
 
-  thisSetDataOnChart() {
+  setDataOnChart() {
     if(this.Slug) { // in a country
-      this.chart.chart.data.datasets[0].data =
+      this.pieChartData =
         [this.countryData.TotalDeaths,
          this.countryData.TotalRecovered,
          this.activeCases]
     }
     else { // in dashboard
-      this.chart.chart.data.datasets[0].data =
+      this.pieChartData =
         [this.summaryData.Global.TotalDeaths,
          this.summaryData.Global.TotalRecovered,
          this.activeCases]

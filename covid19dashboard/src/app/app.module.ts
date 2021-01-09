@@ -20,6 +20,7 @@ import { LineChartComponent } from './line-chart/line-chart.component';
 
 import { SortDirective } from './directive/sort.directive';
 import { UserComponent } from './user/user.component';
+import { NewsComponent } from './news/news.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { UserComponent } from './user/user.component';
     BarChartComponent,
     LineChartComponent,
     SortDirective,
-    UserComponent
+    UserComponent,
+    NewsComponent
   ],
   imports: [
     BrowserModule,

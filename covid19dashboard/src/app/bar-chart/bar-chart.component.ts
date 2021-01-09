@@ -3,7 +3,7 @@ import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
 import { DataService } from '../data.service';
-import { GlobalData, CountryData, SummaryData } from '../models';
+import { GlobalData, CountryData, CountryDataFromZero } from '../models';
 import { ActivatedRoute } from '@angular/router';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 
@@ -18,7 +18,7 @@ export class BarChartComponent implements OnInit {
   Slug: string;
   today: Date;
   lastWeek: Date;
-  summaryData: SummaryData;
+  countryAllDataFromZero: Array<CountryDataFromZero>;
   countryData: Array<CountryData>;
 
 
@@ -52,76 +52,76 @@ export class BarChartComponent implements OnInit {
     this.Slug = this.actRoute.snapshot.params.Slug;
   }
 
-  ngOnInit(): void {
-    this.getWeeklyData();
+  async ngOnInit(): Promise<void> {
+    await this.getWeeklyData();
   }
 
-  getWeeklyData() {
-
-    // In Country Component
-     if(this.Slug) { 
-        this.actRoute.params.subscribe(params => {
-          if(params['Slug']) {
-
-            this.dataService.getSummaryData().subscribe(
+  async getWeeklyData() {
+    const promise = new Promise((resolve, reject) =>  {
+      
+          // In Country Component
+          if(this.Slug) {
+            this.dataService.getDataCountryFromFirstCase(this.Slug).toPromise().then(
               response => {
-                this.summaryData = response;
-                this.getCountryData();
+                this.countryAllDataFromZero = response;
                 this.setCountryData();
-              }
-            )
-          }
-      })
-    }
-    // In Dashboard Component
-    else {
-      this.dataService.getDataApril().subscribe(
-        response => {
-          this.weeklyData = response;
-          this.setGlobalData();
+              })
+            }
+        // In Dashboard Component
+        else {
+          this.dataService.getDataApril().toPromise().then(
+            response => {
+              this.weeklyData = response;
+              this.setGlobalData();
+            })
         }
-      )
-    }
+      })
+    return promise;
 }
-
-public getCountryData() {
-  // console.log("this.summaryData.Countries.length: " + this.summaryData.Countries.length);
-  // var j=0;
-  // var i= this.summaryData.Countries.length;
-  // i = i -1;
-
-  // for(; j<8; i--) {
-  //   if(this.Slug == this.summaryData.Countries[i].Slug) {
-  //    //this.countryData[j];
-  //    console.log("i: " + i + " j: " + j);
-  //    console.log(this.summaryData.Countries[i]);
-  //    j++;
-  //   }
-  // }
-}
-
   public setCountryData() {
-    console.log("Bar Diagram Country: " + this.countryData);
-    if (typeof  this.countryData !== 'undefined' &&   this.countryData.length > 0) {
-      var len = this.countryData.length;
+    //console.log("Bar Diagram Country: " + this.countryAllDataFromZero);
+    if (typeof  this.countryAllDataFromZero !== 'undefined' &&   this.countryAllDataFromZero.length > 0) {
+      var len = this.countryAllDataFromZero.length;
       console.log("Bar Chart setCountryData, len: " + len);
 
-      let NewDeaths = [];
-      let NewRecovered = [];
-      let NewConfirmed = [];
+      let DeathsWExtra = [];
+      let RecoveredWExtra = [];
+      let ConfirmedWExtra = [];
+
+     // console.log(this.countryAllDataFromZero);
       
+      this.countryAllDataFromZero.forEach(element => {
+        if(element.Province == "") { //ignore provinces and overseas territories
+          DeathsWExtra.push(element.Deaths);
+          RecoveredWExtra.push(element.Recovered);
+          ConfirmedWExtra.push(element.Confirmed);
+        }
+      });
+      
+      let Deaths = [];
+      let Recovered = [];
+      let Confirmed = [];
+
+      len = DeathsWExtra.length;
+
+      // console.log(DeathsWExtra, RecoveredWExtra, ConfirmedWExtra)
+
+      // console.log("Len: " + len + " full: " + DeathsWExtra.length);
       for (var j=7; j>0; j--) {
-          NewDeaths.push(this.countryData[len - j].NewDeaths);
-          NewRecovered.push(this.countryData[len - j].NewRecovered);
-          NewConfirmed.push(this.countryData[len - j].NewConfirmed);
+    
+          Deaths.push(DeathsWExtra[len - j]);
+          Recovered.push(RecoveredWExtra[len - j]);
+          Confirmed.push(ConfirmedWExtra[len - j]);
+    
       }
         
+     
       this.setCurrentDates();
 
         this.barChartData = [
-          { data: NewDeaths, label: 'Daily Deaths' },
-          { data: NewRecovered, label: 'Daily Recovered' },
-          { data: NewConfirmed, label: 'Daily New Cases' },
+          { data: Deaths, label: 'Daily Deaths' },
+          { data: Recovered, label: 'Daily Recovered' },
+          { data: Confirmed, label: 'Daily New Cases' },
         ];
     }
     else {
