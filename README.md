@@ -40,9 +40,10 @@ npm install bootstrap
 pip install requests
 ng serve
 
+
 npm install -g firebase-tools
 firebase login
-firebase init (select hosting, dist/expenses, yes to rewrite urls to index, no git, no to the rest)
-
+firebase init (select hosting, dist/covid19dashboard, yes to single page, no to urls to index, no git)
+ng build --prod
 firebase deploy
 ```
