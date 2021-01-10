@@ -28,8 +28,8 @@ export class DashboardComponent implements OnInit {
          
     }
 
-    getSummaryData() {
-      const promise = new Promise((resolve, reject) => {
+    async getSummaryData() {
+      const promise = await new Promise((resolve, reject) => {
           this.dataService.getSummaryData().subscribe(
           response => {
             this.summaryData = response;

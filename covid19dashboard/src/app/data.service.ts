@@ -20,8 +20,7 @@ export class DataService {
   getSummaryData(): Observable<any> {
     console.log("Data Service - getSummaryData(): " + this.url);
   
-    return this.http.get(this.url)
-      .pipe((response) => response);
+    return this.http.get(this.url).pipe((response) => response);
   }
 
   getWeeklyData(Slug): Observable<any> {
@@ -32,15 +31,13 @@ export class DataService {
     if(Slug) {
       var urlDates = "https://api.covid19api.com/live/country/" + Slug + "/status/confirmed/date/" + this.lastWeek + "T00:00:00Z";
       console.log("Data Service - getWeeklyData country: " + urlDates);
-      return this.http.get(urlDates)
-        .pipe((response) => response);
+      return this.http.get(urlDates).pipe((response) => response);
     }
      // Requested by dashboard component
     else {
       var urlDates = "https://api.covid19api.com/world?from=" + this.lastWeek +"T00:00:00Z&to=" + this.today + "T00:00:00Z";
       console.log("Data Service - getWeeklyData world: " + urlDates);
-      return this.http.get(urlDates)
-        .pipe((response) => response);
+      return this.http.get(urlDates).pipe((response) => response);
    }
   }
 
@@ -51,8 +48,7 @@ export class DataService {
 
     console.log("Data Service - getDataCountryFromFirstCase: " + urlCountryFromFirstCase);
    
-    return this.http.get(urlCountryFromFirstCase)
-      .pipe((response) => response);
+    return this.http.get(urlCountryFromFirstCase).pipe((response) => response);
   }
 
   // Get World Data from 13th of April to today
@@ -63,8 +59,7 @@ export class DataService {
 
     console.log("Data Service - getDataApril: " + urlApril);
    
-    return this.http.get(urlApril)
-      .pipe((response) => response);
+    return this.http.get(urlApril).pipe((response) => response);
   }
 
   /*** Date functionalities ***/

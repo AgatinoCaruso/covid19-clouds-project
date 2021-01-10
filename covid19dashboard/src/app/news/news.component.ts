@@ -4,8 +4,6 @@ import { News, CountryData, SummaryData } from '../models';
 import { DataService } from '../data.service';
 import { DatabaseService } from '../database.service';
 import { ActivatedRoute } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-
 
 @Component({
   selector: 'app-news',
@@ -36,10 +34,10 @@ export class NewsComponent implements OnInit {
     this.dataService.getSummaryData().subscribe((res: SummaryData) => {
       let summaryData = res;
       this.countries = summaryData.Countries;
-      let worldwide = new CountryData;
-      worldwide.Country = "Worldwide";
-      worldwide.Slug = "worldwide";
-      this.countries.push(worldwide);
+      let global = new CountryData;
+      global.Country = "Worldwide";
+      global.Slug = "worldwide";
+      this.countries.push(global);
       this.getNews();
     })
   }
@@ -88,6 +86,9 @@ export class NewsComponent implements OnInit {
       Description: this.description
     };
     console.log("add News: " + news.Description);
+    console.log("Country: " + news.CountryData);
+    console.log("Date: " + news.Date);
+    console.log("Slug: " + this.selectedCountry.Slug);
     this.databaseService.addNews(this.selectedCountry.Slug, news);
     this.selectedCountry = undefined;
     this.description = undefined;

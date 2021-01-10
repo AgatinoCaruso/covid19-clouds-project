@@ -100,13 +100,12 @@ export class DatabaseService {
   }
 
   getNews(Slug: string) {
-    return this.firestore.collection("Countries")
-    .doc(Slug).collection("News").valueChanges();
+    return this.firestore.collection("Countries").doc(Slug).collection("News").valueChanges();
   }
 
   addNews(Slug: string, news: News) {
-    this.firestore.collection("Countries")
-    .doc(Slug).collection("News").add(news);
+    this.firestore.collection("Countries").doc(Slug).collection("News")
+    .add(JSON.parse(JSON.stringify(news))); // workaround: worldwide fix
   }
 
 }

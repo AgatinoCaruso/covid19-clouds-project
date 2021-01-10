@@ -76,7 +76,6 @@
                             <th class="table-warning text-right border-white">Description</th>
                             <th class="table-primary text-right border-white">Author</th>
                             <th class="table-primary text-right border-white">Date</th>
-                            <th class="table-primary text-right border-white">Admin</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,8 +83,7 @@
                             <td class="table-dark text-center border-white"><a href="dashboard/{{one.CountryData.Slug}}" class="text-white">{{one.CountryData.Country}}</a></td>
                             <td class="table-warning text-left border-white">{{one.Description}}</td>
                             <td class="table-primary text-center border-white">{{one.displayName}} </td>
-                            <td class="table-primary text-center border-white"> {{one.Date | date:'dd MMM yyyy'}}</td>
-                            <td class="table-primary text-center border-white">{{one.admin}}</td>                         
+                            <td class="table-primary text-center border-white"> {{one.Date | date:'dd MMM yyyy'}}</td>                       
                         </tr>
                     </tbody>
                 </table>
