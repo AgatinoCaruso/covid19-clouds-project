@@ -1,4 +1,4 @@
-# Covid-19 Dashoboard
+# Covid-19 Dashboard
 
 [Link to the app](https://covid19-dashboard-295118.web.app/)
 
