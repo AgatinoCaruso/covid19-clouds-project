@@ -1,6 +1,6 @@
-# Expenses
+# Covid-19 Dashoboard
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.11.
+[Link to the app](https://covid19-dashboard-295118.web.app/)
 
 ## Development server
 
