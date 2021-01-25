@@ -26,7 +26,7 @@ export class DataService {
   // Used by country component
   getDataCountryFromFirstCase(Slug): Observable<any> {
 
-    var urlCountryFromFirstCase ="https://api.covid19api.com/dayone/country/" + Slug;
+    var urlCountryFromFirstCase ="https://api.covid19api.com/total/dayone/country/" + Slug;
 
     console.log("Data Service - getDataCountryFromFirstCase: " + urlCountryFromFirstCase);
    
@@ -38,7 +38,7 @@ export class DataService {
 
     this.setCurrentDates();
     var urlApril ="https://api.covid19api.com/world?from=2020-04-13T00:00:00Z&to=" + this.today + "T00:00:00Z";
-
+    
     console.log("Data Service - getDataApril: " + urlApril);
    
     return this.http.get(urlApril).pipe((response) => response);

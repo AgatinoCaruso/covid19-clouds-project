@@ -94,7 +94,7 @@ export class LineChartComponent implements OnInit {
 
 
     var i=0;
-    for (let j = 0; j < this.countryAllDataFromZero.length-1;j++) {
+    for (let j = 0; j < this.countryAllDataFromZero.length;j++) {
 
      
         if(this.countryAllDataFromZero[j].Province == "") { //ignore provinces and overseas territories

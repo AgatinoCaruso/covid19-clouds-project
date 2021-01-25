@@ -8,6 +8,7 @@ import { CountryComponent } from './country/country.component';
 
 const routes: Routes = [
   { path: "dashboard", component: DashboardComponent },
+  { path: "dashboard/worldwide", redirectTo: "dashboard" },
   { path: "dashboard/:Slug", component: CountryComponent },
   { path: "**", redirectTo: "dashboard"}
 ];

@@ -13,12 +13,12 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class NewsComponent implements OnInit {
 
-  news: News[] = [];
+  Slug: string;
   selectedCountry: CountryData;
   description: string;
+  news: News[] = [];
   countries: CountryData[];
-  Slug: string;
-
+  
   constructor(
     private actRoute: ActivatedRoute,
     private dataService: DataService,
@@ -51,6 +51,23 @@ export class NewsComponent implements OnInit {
       return false;
   }
 
+  addNews() {
+    let myDate = new Date();
+    let news: News = {
+      CountryData: this.selectedCountry,
+      Date: myDate.toISOString(),
+      uid: this.databaseService.user.uid,
+      displayName: this.databaseService.user.displayName,
+      Description: this.description
+    };
+    console.log("add News: " + news.Description);
+    console.log("Country: " + news.CountryData);
+    console.log("Date: " + news.Date);
+    console.log("Slug: " + this.selectedCountry.Slug);
+    this.databaseService.addNews(this.selectedCountry.Slug, news);
+    this.description = undefined;
+    this.selectedCountry = undefined;
+  }
 
   async getNews() {
     // In Dashboard Component
@@ -74,24 +91,5 @@ export class NewsComponent implements OnInit {
     }
   }
 
-  
-  addNews() {
-
-    let date = new Date();
-    let news: News = {
-      CountryData: this.selectedCountry,
-      Date: date.toISOString(),
-      uid: this.databaseService.user.uid,
-      displayName: this.databaseService.user.displayName,
-      Description: this.description
-    };
-    console.log("add News: " + news.Description);
-    console.log("Country: " + news.CountryData);
-    console.log("Date: " + news.Date);
-    console.log("Slug: " + this.selectedCountry.Slug);
-    this.databaseService.addNews(this.selectedCountry.Slug, news);
-    this.selectedCountry = undefined;
-    this.description = undefined;
-  }
 
 }
