@@ -23,24 +23,6 @@ export class DataService {
     return this.http.get(this.url).pipe((response) => response);
   }
 
-  getWeeklyData(Slug): Observable<any> {
-    //https://api.covid19api.com/country/south-africa/status/confirmed?from=2020-03-01T00:00:00Z&to=2020-04-01T00:00:00Z
-    this.setCurrentDates(); 
-
-    // Requested by country component
-    if(Slug) {
-      var urlDates = "https://api.covid19api.com/live/country/" + Slug + "/status/confirmed/date/" + this.lastWeek + "T00:00:00Z";
-      console.log("Data Service - getWeeklyData country: " + urlDates);
-      return this.http.get(urlDates).pipe((response) => response);
-    }
-     // Requested by dashboard component
-    else {
-      var urlDates = "https://api.covid19api.com/world?from=" + this.lastWeek +"T00:00:00Z&to=" + this.today + "T00:00:00Z";
-      console.log("Data Service - getWeeklyData world: " + urlDates);
-      return this.http.get(urlDates).pipe((response) => response);
-   }
-  }
-
   // Used by country component
   getDataCountryFromFirstCase(Slug): Observable<any> {
 
